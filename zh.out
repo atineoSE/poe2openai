@@ -1,0 +1,1226 @@
+./templates/admin.html:2:<html lang="zh-Hant" class="scroll-smooth">
+./templates/admin.html:4:    <meta charset="UTF-8">
+./templates/admin.html:5:    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+./templates/admin.html:7:    <link href="./static/fontawesome.css" rel="stylesheet">
+./templates/admin.html:8:    <script src="./static/tailwind.js"></script>
+./templates/admin.html:41:	<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+./templates/admin.html:42:		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+./templates/admin.html:44:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 sm:p-6 mb-6 transition-all duration-300">
+./templates/admin.html:45:				<div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+./templates/admin.html:46:					<h1 class="text-2xl font-medium text-gray-900 dark:text-white">Models 管理介面</h1>
+./templates/admin.html:47:					<div class="flex flex-wrap items-center gap-3">
+./templates/admin.html:49:						<button id="themeToggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 transition-colors duration-300">
+./templates/admin.html:50:							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+./templates/admin.html:51:								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+./templates/admin.html:53:							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-300 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+./templates/admin.html:54:								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+./templates/admin.html:58:						<div class="flex items-center gap-3">
+./templates/admin.html:59:							<span class="text-sm font-medium">啟用自定義</span>
+./templates/admin.html:60:							<label class="relative inline-flex items-center cursor-pointer">
+./templates/admin.html:61:								<input type="checkbox" id="apiToggle" class="sr-only peer">
+./templates/admin.html:62:								<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 dark:peer-focus:ring-primary-dark/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-dark"></div>
+./templates/admin.html:66:						<div class="flex items-center gap-3">
+./templates/admin.html:67:							<span class="text-sm font-medium">隱藏停用模型</span>
+./templates/admin.html:68:							<label class="relative inline-flex items-center cursor-pointer">
+./templates/admin.html:69:								<input type="checkbox" id="hideDisabledToggle" class="sr-only peer">
+./templates/admin.html:70:								<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 dark:peer-focus:ring-primary-dark/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-dark"></div>
+./templates/admin.html:76:				<div class="flex flex-wrap gap-3 mt-4">
+./templates/admin.html:77:					<button onclick="loadModels()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:78:						<i class="fas fa-file-upload mr-2"></i>
+./templates/admin.html:81:					<button onclick="saveModels()" class="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-light text-white dark:bg-primary-dark dark:hover:opacity-90 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:82:						<i class="fas fa-save mr-2"></i>
+./templates/admin.html:85:					<button onclick="fetchModels()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:86:						<i class="fas fa-cloud-download-alt mr-2"></i>
+./templates/admin.html:89:					<button onclick="showAddCustomModel()" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:90:						<i class="fas fa-plus mr-2"></i>
+./templates/admin.html:93:					<button onclick="showGuide()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:94:						<i class="fas fa-question-circle mr-2"></i>
+./templates/admin.html:101:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 mb-6 transition-all duration-300">
+./templates/admin.html:102:				<div class="flex flex-col sm:flex-row gap-4">
+./templates/admin.html:103:					<div class="flex-grow">
+./templates/admin.html:104:						<div class="relative">
+./templates/admin.html:105:							<input id="modelSearchInput" type="text" placeholder="搜索模型..." class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+./templates/admin.html:106:							<i class="fas fa-search absolute right-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
+./templates/admin.html:109:					<div class="flex items-center gap-3">
+./templates/admin.html:110:						<select id="modelFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+./templates/admin.html:111:							<option value="all">所有模型</option>
+./templates/admin.html:112:							<option value="custom">自訂模型</option>
+./templates/admin.html:113:							<option value="mapped">已映射模型</option>
+./templates/admin.html:114:							<option value="replace">替換回應模型</option>
+./templates/admin.html:115:							<option value="disabled">已停用模型</option>
+./templates/admin.html:121:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 mb-6 transition-all duration-300">
+./templates/admin.html:122:				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center">
+./templates/admin.html:123:					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+./templates/admin.html:124:						<span class="block text-sm text-gray-500 dark:text-gray-400">總模型數</span>
+./templates/admin.html:125:						<span id="totalModelsCount" class="block text-xl font-semibold mt-1">0</span>
+./templates/admin.html:127:					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+./templates/admin.html:128:						<span class="block text-sm text-gray-500 dark:text-gray-400">自訂模型</span>
+./templates/admin.html:129:						<span id="customModelsCount" class="block text-xl font-semibold mt-1 text-green-600 dark:text-green-400">0</span>
+./templates/admin.html:131:					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+./templates/admin.html:132:						<span class="block text-sm text-gray-500 dark:text-gray-400">已映射</span>
+./templates/admin.html:133:						<span id="mappedModelsCount" class="block text-xl font-semibold mt-1 text-blue-600 dark:text-blue-400">0</span>
+./templates/admin.html:135:					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+./templates/admin.html:136:						<span class="block text-sm text-gray-500 dark:text-gray-400">替換回應</span>
+./templates/admin.html:137:						<span id="replaceModelsCount" class="block text-xl font-semibold mt-1 text-yellow-600 dark:text-yellow-400">0</span>
+./templates/admin.html:139:					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+./templates/admin.html:140:						<span class="block text-sm text-gray-500 dark:text-gray-400">已停用</span>
+./templates/admin.html:141:						<span id="disabledModelsCount" class="block text-xl font-semibold mt-1 text-red-600 dark:text-red-400">0</span>
+./templates/admin.html:146:			<div class="relative min-h-[300px]">
+./templates/admin.html:147:				<div id="loadingIndicator" class="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 flex items-center justify-center z-10 rounded-xl">
+./templates/admin.html:148:					<div class="text-center">
+./templates/admin.html:149:						<i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary dark:text-primary-dark"></i>
+./templates/admin.html:150:						<p class="text-gray-700 dark:text-gray-300">載入模型中...</p>
+./templates/admin.html:153:				<div id="modelsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+./templates/admin.html:156:				<div id="noResultsMessage" class="hidden text-center py-10 text-gray-500 dark:text-gray-400">
+./templates/admin.html:157:					<i class="fas fa-search text-3xl mb-3"></i>
+./templates/admin.html:160:				<div id="errorMessage" class="hidden text-center py-10 text-red-500">
+./templates/admin.html:161:					<i class="fas fa-exclamation-triangle text-3xl mb-3"></i>
+./templates/admin.html:163:					<button onclick="fetchModels()" class="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200 text-gray-900 dark:text-white">
+./templates/admin.html:164:						<i class="fas fa-redo mr-2"></i>重試
+./templates/admin.html:170:			<div id="pagination" class="mt-6 flex justify-center items-center gap-2 text-sm">
+./templates/admin.html:175:		<div id="editModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+./templates/admin.html:176:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 transform scale-95 transition-transform duration-300">
+./templates/admin.html:177:				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+./templates/admin.html:178:					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">編輯Model映射名稱</h2>
+./templates/admin.html:179:					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+./templates/admin.html:180:						<i class="fas fa-times text-lg"></i>
+./templates/admin.html:183:				<input type="text" id="modelNameInput" placeholder="輸入新的映射名稱" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200 mb-5">
+./templates/admin.html:184:				<div class="flex justify-end gap-3">
+./templates/admin.html:185:					<button onclick="cancelEdit()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:188:					<button onclick="saveEdit()" class="px-4 py-2 bg-primary hover:bg-primary-light text-white dark:bg-primary-dark dark:hover:opacity-90 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:195:		<div id="addCustomModelModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+./templates/admin.html:196:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-lg w-full p-6 transform scale-95 transition-transform duration-300">
+./templates/admin.html:197:				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+./templates/admin.html:198:					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">添加自訂模型</h2>
+./templates/admin.html:199:					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+./templates/admin.html:200:						<i class="fas fa-times text-lg"></i>
+./templates/admin.html:203:				<div class="space-y-4">
+./templates/admin.html:205:						<label for="customModelId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">模型ID / Bot名稱</label>
+./templates/admin.html:206:						<input type="text" id="customModelId" placeholder="輸入模型ID或Bot名稱" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+./templates/admin.html:209:						<label for="customModelOwner" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">模型提供商 (選填)</label>
+./templates/admin.html:210:						<input type="text" id="customModelOwner" placeholder="例如：openai" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+./templates/admin.html:213:				<div class="flex justify-end gap-3 mt-6">
+./templates/admin.html:214:					<button onclick="closeModals()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:217:					<button onclick="addCustomModel()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:224:		<div id="customModelsListModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+./templates/admin.html:225:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full p-6 transform scale-95 transition-transform duration-300">
+./templates/admin.html:226:				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+./templates/admin.html:227:					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">自訂模型管理</h2>
+./templates/admin.html:228:					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+./templates/admin.html:229:						<i class="fas fa-times text-lg"></i>
+./templates/admin.html:232:				<div id="customModelsList" class="space-y-3 max-h-[60vh] overflow-y-auto">
+./templates/admin.html:234:					<div class="text-center py-8 text-gray-500 dark:text-gray-400" id="noCustomModelsMessage">
+./templates/admin.html:235:						<i class="fas fa-info-circle text-2xl mb-2"></i>
+./templates/admin.html:239:				<div class="flex justify-end gap-3 mt-6">
+./templates/admin.html:240:					<button onclick="closeModals()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
+./templates/admin.html:247:		<div id="guideModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+./templates/admin.html:248:			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 transform scale-95 transition-transform duration-300">
+./templates/admin.html:249:				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+./templates/admin.html:250:					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">功能說明</h2>
+./templates/admin.html:251:					<button onclick="closeGuide()" class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+./templates/admin.html:252:						<i class="fas fa-times text-lg"></i>
+./templates/admin.html:255:				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3">
+./templates/admin.html:256:					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
+./templates/admin.html:257:						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">模型狀態設定</h3>
+./templates/admin.html:258:						<ul class="space-y-2 text-sm">
+./templates/admin.html:259:							<li class="flex items-start">
+./templates/admin.html:260:								<span class="font-semibold mr-2">無標記 (-)：</span>
+./templates/admin.html:263:							<li class="flex items-start">
+./templates/admin.html:264:								<span class="font-semibold mr-2">黃色 (R)：</span>
+./templates/admin.html:267:							<li class="flex items-start">
+./templates/admin.html:268:								<span class="font-semibold mr-2">打叉 (X)：</span>
+./templates/admin.html:273:					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
+./templates/admin.html:274:						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">模型映射功能</h3>
+./templates/admin.html:275:						<ul class="space-y-2 text-sm">
+./templates/admin.html:276:							<li class="flex items-start">
+./templates/admin.html:279:							<li class="flex items-start">
+./templates/admin.html:282:							<li class="flex items-start">
+./templates/admin.html:287:					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
+./templates/admin.html:288:						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">全域啟用開關影響範圍</h3>
+./templates/admin.html:289:						<ul class="space-y-2 text-sm">
+./templates/admin.html:290:							<li class="flex items-start">
+./templates/admin.html:293:							<li class="flex items-start">
+./templates/admin.html:294:								<span class="font-semibold mr-2">模型列表過濾 & 模型映射</span>
+./templates/admin.html:296:							<li class="flex items-start">
+./templates/admin.html:297:								<span class="ml-2">- GET /v1/models</span>
+./templates/admin.html:299:							<li class="flex items-start">
+./templates/admin.html:300:								<span class="ml-2">- GET /models</span>
+./templates/admin.html:302:							<li class="flex items-start">
+./templates/admin.html:303:								<span class="font-semibold mr-2">聊天事件處理 & 模型映射</span>
+./templates/admin.html:305:							<li class="flex items-start">
+./templates/admin.html:306:								<span class="ml-2">- POST /chat/completions</span>
+./templates/admin.html:308:							<li class="flex items-start">
+./templates/admin.html:309:								<span class="ml-2">- POST /v1/chat/completions</span>
+./templates/admin.html:313:					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
+./templates/admin.html:314:						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">自訂模型功能</h3>
+./templates/admin.html:315:						<ul class="space-y-2 text-sm">
+./templates/admin.html:316:							<li class="flex items-start">
+./templates/admin.html:319:							<li class="flex items-start">
+./templates/admin.html:322:							<li class="flex items-start">
+./templates/admin.html:325:							<li class="flex items-start">
+./templates/admin.html:330:					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
+./templates/admin.html:331:						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">搜索與過濾</h3>
+./templates/admin.html:332:						<ul class="space-y-2 text-sm">
+./templates/admin.html:333:							<li class="flex items-start">
+./templates/admin.html:336:							<li class="flex items-start">
+./templates/admin.html:339:							<li class="flex items-start">
+./templates/admin.html:342:							<li class="flex items-start">
+./templates/admin.html:351:		<div id="toast" class="fixed bottom-5 right-5 px-6 py-3 bg-gray-800 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg shadow-lg transform translate-y-10 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+./templates/admin.html:352:			<span id="toastMessage"></span>
+./templates/admin.html:363:            let darkMode = localStorage.getItem("darkMode") === "true";
+./templates/admin.html:364:            let hideDisabled = localStorage.getItem("hideDisabled") === "true";
+./templates/admin.html:367:            let currentFilter = "all";
+./templates/admin.html:368:            let searchTerm = "";
+./templates/admin.html:369:            // Initialize the page
+./templates/admin.html:370:            document.addEventListener("DOMContentLoaded", () => {
+./templates/admin.html:371:              // 等待DOM完全加載後執行
+./templates/admin.html:375:              // Setup theme toggle
+./templates/admin.html:376:              document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+./templates/admin.html:377:              // Setup hide disabled toggle
+./templates/admin.html:378:              const hideDisabledToggle = document.getElementById("hideDisabledToggle");
+./templates/admin.html:380:              hideDisabledToggle.addEventListener("change", toggleHideDisabled);
+./templates/admin.html:381:              // Setup modal close buttons
+./templates/admin.html:382:              document.querySelectorAll(".close-modal").forEach((btn) => {
+./templates/admin.html:383:                btn.addEventListener("click", () => {
+./templates/admin.html:387:              // Setup search and filter
+./templates/admin.html:389:                .getElementById("modelSearchInput")
+./templates/admin.html:390:                .addEventListener("input", handleSearch);
+./templates/admin.html:392:                .getElementById("modelFilter")
+./templates/admin.html:393:                .addEventListener("change", handleFilter);
+./templates/admin.html:394:              // Close modals when clicking outside
+./templates/admin.html:395:              window.addEventListener("click", (event) => {
+./templates/admin.html:397:                  event.target.id === "editModal" ||
+./templates/admin.html:398:                  event.target.id === "guideModal" ||
+./templates/admin.html:399:                  event.target.id === "addCustomModelModal" ||
+./templates/admin.html:400:                  event.target.id === "customModelsListModal"
+./templates/admin.html:405:              // Handle escape key to close modals
+./templates/admin.html:406:              document.addEventListener("keydown", (e) => {
+./templates/admin.html:407:                if (e.key === "Escape") {
+./templates/admin.html:412:            // Theme toggle
+./templates/admin.html:415:              localStorage.setItem("darkMode", darkMode);
+./templates/admin.html:420:                document.documentElement.classList.add("dark");
+./templates/admin.html:422:                document.documentElement.classList.remove("dark");
+./templates/admin.html:425:            // Hide disabled models toggle
+./templates/admin.html:428:              localStorage.setItem("hideDisabled", hideDisabled);
+./templates/admin.html:431:            // Close all modals
+./templates/admin.html:434:                document.getElementById("editModal"),
+./templates/admin.html:435:                document.getElementById("guideModal"),
+./templates/admin.html:436:                document.getElementById("addCustomModelModal"),
+./templates/admin.html:437:                document.getElementById("customModelsListModal"),
+./templates/admin.html:440:                modal.classList.add("opacity-0", "pointer-events-none");
+./templates/admin.html:441:                const content = modal.querySelector("div > div");
+./templates/admin.html:442:                content.classList.add("scale-95");
+./templates/admin.html:443:                content.classList.remove("scale-100");
+./templates/admin.html:447:            // Load configuration
+./templates/admin.html:450:                const response = await fetch("/api/admin/config", {
+./templates/admin.html:451:                  credentials: "same-origin",
+./templates/admin.html:455:                // 確保 custom_models 存在
+./templates/admin.html:459:                document.getElementById("apiToggle").checked = configData.enable;
+./templates/admin.html:463:                showToast("載入配置失敗");
+./templates/admin.html:464:                console.error("載入配置錯誤:", error);
+./templates/admin.html:467:            // Update model states based on config
+./templates/admin.html:472:                  ? "R"
+./templates/admin.html:474:                  ? "X"
+./templates/admin.html:475:                  : "-",
+./templates/admin.html:477:              // 添加自訂模型
+./templates/admin.html:480:                  // 檢查是否已存在於模型列表
+./templates/admin.html:489:                        ? "R"
+./templates/admin.html:491:                        ? "X"
+./templates/admin.html:492:                        : "-",
+./templates/admin.html:498:            // Search and filter handling
+./templates/admin.html:510:              // 先顯示載入指示器
+./templates/admin.html:512:              // 使用setTimeout來避免UI阻塞
+./templates/admin.html:515:                // Apply search filter
+./templates/admin.html:521:                // Apply type filter
+./templates/admin.html:522:                if (currentFilter !== "all") {
+./templates/admin.html:523:                  if (currentFilter === "custom") {
+./templates/admin.html:527:                  } else if (currentFilter === "mapped") {
+./templates/admin.html:531:                  } else if (currentFilter === "replace") {
+./templates/admin.html:532:                    filteredModels = filteredModels.filter((model) => model.state === "R");
+./templates/admin.html:533:                  } else if (currentFilter === "disabled") {
+./templates/admin.html:534:                    filteredModels = filteredModels.filter((model) => model.state === "X");
+./templates/admin.html:537:                // Apply hide disabled filter
+./templates/admin.html:539:                  filteredModels = filteredModels.filter((model) => model.state !== "X");
+./templates/admin.html:541:                // Update stats
+./templates/admin.html:543:                // Render filtered models
+./templates/admin.html:545:                // 隱藏載入指示器
+./templates/admin.html:547:              }, 5); // 小延遲，讓UI有時間響應
+./templates/admin.html:549:            // Show or hide loading indicator
+./templates/admin.html:551:              const loadingIndicator = document.getElementById("loadingIndicator");
+./templates/admin.html:552:              const noResultsMessage = document.getElementById("noResultsMessage");
+./templates/admin.html:553:              const errorMessage = document.getElementById("errorMessage");
+./templates/admin.html:555:                loadingIndicator.classList.remove("hidden");
+./templates/admin.html:556:                noResultsMessage.classList.add("hidden");
+./templates/admin.html:557:                errorMessage.classList.add("hidden");
+./templates/admin.html:559:                loadingIndicator.classList.add("hidden");
+./templates/admin.html:562:            // Check if a model is custom
+./templates/admin.html:571:            // Update model statistics
+./templates/admin.html:578:              const replaceModels = models.filter((m) => m.state === "R").length;
+./templates/admin.html:579:              const disabledModels = models.filter((m) => m.state === "X").length;
+./templates/admin.html:580:              document.getElementById("totalModelsCount").textContent = totalModels;
+./templates/admin.html:581:              document.getElementById("customModelsCount").textContent = customModels;
+./templates/admin.html:582:              document.getElementById("mappedModelsCount").textContent = mappedModels;
+./templates/admin.html:583:              document.getElementById("replaceModelsCount").textContent = replaceModels;
+./templates/admin.html:584:              document.getElementById("disabledModelsCount").textContent = disabledModels;
+./templates/admin.html:586:            // Toggle model state
+./templates/admin.html:588:              const states = ["-", "R", "X"];
+./templates/admin.html:591:              // Update configuration
+./templates/admin.html:595:              // Clear existing state
+./templates/admin.html:598:              // Set new state
+./templates/admin.html:599:              if (model.state === "R") {
+./templates/admin.html:601:              } else if (model.state === "X") {
+./templates/admin.html:604:              // Remove empty model entries
+./templates/admin.html:610:            // Render model cards with pagination
+./templates/admin.html:612:              const grid = document.getElementById("modelsGrid");
+./templates/admin.html:613:              grid.innerHTML = "";
+./templates/admin.html:614:              const noResultsMessage = document.getElementById("noResultsMessage");
+./templates/admin.html:615:              // Calculate pagination
+./templates/admin.html:624:                noResultsMessage.classList.remove("hidden");
+./templates/admin.html:626:                noResultsMessage.classList.add("hidden");
+./templates/admin.html:631:                  const card = document.createElement("div");
+./templates/admin.html:633:                    "bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 transition-all duration-300 flex justify-between items-center hover:shadow-lg";
+./templates/admin.html:634:                  // 檢測是否是自訂模型
+./templates/admin.html:641:                    card.classList.add("border-l-4", "border-green-500");
+./templates/admin.html:643:                  // Model info content
+./templates/admin.html:644:                  const modelInfo = document.createElement("div");
+./templates/admin.html:645:                  modelInfo.className = "flex-grow pr-3";
+./templates/admin.html:646:                  // Name container
+./templates/admin.html:647:                  const nameSpan = document.createElement("div");
+./templates/admin.html:649:                    "font-medium text-gray-900 dark:text-white transition-colors";
+./templates/admin.html:651:                    const originalName = document.createElement("span");
+./templates/admin.html:653:                      "line-through text-red-500 dark:text-red-400 mr-2 transition-colors";
+./templates/admin.html:655:                    const mappingName = document.createElement("span");
+./templates/admin.html:662:                  // 如果是自訂模型，添加標籤
+./templates/admin.html:664:                    const customTag = document.createElement("span");
+./templates/admin.html:666:                      "ml-2 px-1.5 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded";
+./templates/admin.html:667:                    customTag.textContent = "自訂";
+./templates/admin.html:671:                  // Control buttons
+./templates/admin.html:672:                  const controls = document.createElement("div");
+./templates/admin.html:673:                  controls.className = "flex items-center gap-3";
+./templates/admin.html:674:                  // State checkbox
+./templates/admin.html:675:                  const checkbox = document.createElement("div");
+./templates/admin.html:677:                    "w-6 h-6 flex items-center justify-center rounded transition-colors cursor-pointer";
+./templates/admin.html:678:                  if (model.state === "-") {
+./templates/admin.html:679:                    checkbox.classList.add("bg-gray-200", "dark:bg-gray-700");
+./templates/admin.html:680:                  } else if (model.state === "R") {
+./templates/admin.html:682:                      "bg-yellow-100",
+./templates/admin.html:683:                      "dark:bg-yellow-900",
+./templates/admin.html:684:                      "text-yellow-700",
+./templates/admin.html:685:                      "dark:text-yellow-400",
+./templates/admin.html:686:                      "font-bold"
+./templates/admin.html:688:                    checkbox.innerHTML = "R";
+./templates/admin.html:689:                  } else if (model.state === "X") {
+./templates/admin.html:691:                      "bg-red-100",
+./templates/admin.html:692:                      "dark:bg-red-900",
+./templates/admin.html:693:                      "text-red-600",
+./templates/admin.html:694:                      "dark:text-red-400"
+./templates/admin.html:696:                    checkbox.innerHTML = '<i class="fas fa-times"></i>';
+./templates/admin.html:699:                  // Edit and reset buttons
+./templates/admin.html:700:                  const buttonControls = document.createElement("div");
+./templates/admin.html:701:                  buttonControls.className = "flex gap-2";
+./templates/admin.html:702:                  const editBtn = document.createElement("button");
+./templates/admin.html:704:                    "text-primary dark:text-primary-dark hover:opacity-80 transition-opacity";
+./templates/admin.html:705:                  editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+./templates/admin.html:710:                  const resetBtn = document.createElement("button");
+./templates/admin.html:712:                    "text-gray-500 dark:text-gray-400 hover:opacity-80 transition-opacity " +
+./templates/admin.html:713:                    (hasMappedName ? "" : "opacity-0 pointer-events-none");
+./templates/admin.html:714:                  resetBtn.innerHTML = '<i class="fas fa-undo"></i>';
+./templates/admin.html:719:                  // 如果是自訂模型，添加刪除按鈕
+./templates/admin.html:721:                    const deleteBtn = document.createElement("button");
+./templates/admin.html:723:                      "text-red-500 dark:text-red-400 hover:opacity-80 transition-opacity";
+./templates/admin.html:724:                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+./templates/admin.html:737:                  // 移除卡片點擊事件，只保留按鈕的點擊功能
+./templates/admin.html:741:              // Render pagination
+./templates/admin.html:744:            // Render pagination controls
+./templates/admin.html:746:              const pagination = document.getElementById("pagination");
+./templates/admin.html:747:              pagination.innerHTML = "";
+./templates/admin.html:751:              // Previous button
+./templates/admin.html:752:              const prevBtn = document.createElement("button");
+./templates/admin.html:755:                  ? "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
+./templates/admin.html:756:                  : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+./templates/admin.html:758:              prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+./templates/admin.html:767:              // Page numbers
+./templates/admin.html:774:                const pageBtn = document.createElement("button");
+./templates/admin.html:777:                    ? "bg-primary text-white dark:bg-primary-dark"
+./templates/admin.html:778:                    : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+./templates/admin.html:789:              // Next button
+./templates/admin.html:790:              const nextBtn = document.createElement("button");
+./templates/admin.html:793:                  ? "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
+./templates/admin.html:794:                  : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+./templates/admin.html:796:              nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+./templates/admin.html:806:            // Reset mapping
+./templates/admin.html:815:              showToast("已重置映射名稱");
+./templates/admin.html:817:            // Show edit modal
+./templates/admin.html:820:              const modal = document.getElementById("editModal");
+./templates/admin.html:821:              const modalContent = modal.querySelector("div > div");
+./templates/admin.html:822:              const input = document.getElementById("modelNameInput");
+./templates/admin.html:823:              input.value = configData.models[model.name]?.mapping || "";
+./templates/admin.html:824:              modal.classList.remove("opacity-0", "pointer-events-none");
+./templates/admin.html:825:              modalContent.classList.remove("scale-95");
+./templates/admin.html:826:              modalContent.classList.add("scale-100");
+./templates/admin.html:829:                // 添加按Enter確認的功能
+./templates/admin.html:831:                  if (e.key === "Enter") {
+./templates/admin.html:837:            // Show guide modal
+./templates/admin.html:839:              const modal = document.getElementById("guideModal");
+./templates/admin.html:840:              const modalContent = modal.querySelector("div > div");
+./templates/admin.html:841:              modal.classList.remove("opacity-0", "pointer-events-none");
+./templates/admin.html:842:              modalContent.classList.remove("scale-95");
+./templates/admin.html:843:              modalContent.classList.add("scale-100");
+./templates/admin.html:845:            // Close guide modal
+./templates/admin.html:847:              const modal = document.getElementById("guideModal");
+./templates/admin.html:848:              modal.classList.add("opacity-0", "pointer-events-none");
+./templates/admin.html:849:              const content = modal.querySelector("div > div");
+./templates/admin.html:850:              content.classList.add("scale-95");
+./templates/admin.html:851:              content.classList.remove("scale-100");
+./templates/admin.html:853:            // Show add custom model modal
+./templates/admin.html:855:              const modal = document.getElementById("addCustomModelModal");
+./templates/admin.html:856:              const modalContent = modal.querySelector("div > div");
+./templates/admin.html:857:              // 清空輸入框
+./templates/admin.html:858:              document.getElementById("customModelId").value = "";
+./templates/admin.html:859:              document.getElementById("customModelOwner").value = "";
+./templates/admin.html:860:              modal.classList.remove("opacity-0", "pointer-events-none");
+./templates/admin.html:861:              modalContent.classList.remove("scale-95");
+./templates/admin.html:862:              modalContent.classList.add("scale-100");
+./templates/admin.html:864:                const input = document.getElementById("customModelId");
+./templates/admin.html:866:                // 添加按Enter確認的功能
+./templates/admin.html:868:                  if (e.key === "Enter") {
+./templates/admin.html:872:                document.getElementById("customModelOwner").onkeydown = (e) => {
+./templates/admin.html:873:                  if (e.key === "Enter") {
+./templates/admin.html:879:            // Delete custom model
+./templates/admin.html:885:              // 確認是否要刪除
+./templates/admin.html:886:              if (!confirm(`確定要刪除自訂模型 "${modelId}" 嗎？`)) {
+./templates/admin.html:889:              // 從配置中移除模型
+./templates/admin.html:893:              // 從當前顯示的模型列表中移除
+./templates/admin.html:900:            // Add custom model
+./templates/admin.html:902:              const id = document.getElementById("customModelId").value.trim();
+./templates/admin.html:904:                document.getElementById("customModelOwner").value.trim() || "custom";
+./templates/admin.html:906:                showToast("請輸入模型ID/Bot名稱");
+./templates/admin.html:909:              // 檢查ID是否已存在
+./templates/admin.html:911:                showToast("該模型ID已存在");
+./templates/admin.html:914:              // 確保 custom_models 存在
+./templates/admin.html:918:              // 添加到配置 (無需 base_model)
+./templates/admin.html:922:                created: Math.floor(Date.now() / 1000), // 當前時間戳
+./templates/admin.html:924:              // 添加到當前顯示的模型列表
+./templates/admin.html:927:                state: "-",
+./templates/admin.html:934:            // Cancel edit
+./templates/admin.html:938:            // Save edit
+./templates/admin.html:940:              const input = document.getElementById("modelNameInput");
+./templates/admin.html:960:                showToast("修改成功");
+./templates/admin.html:963:            // Show toast notification
+./templates/admin.html:965:              const toast = document.getElementById("toast");
+./templates/admin.html:966:              const toastMessage = document.getElementById("toastMessage");
+./templates/admin.html:968:              toast.classList.remove("translate-y-10", "opacity-0");
+./templates/admin.html:970:                toast.classList.add("translate-y-10", "opacity-0");
+./templates/admin.html:973:            // Toggle API configuration
+./templates/admin.html:974:            document.getElementById("apiToggle").onchange = async (e) => {
+./templates/admin.html:979:                showToast(`${enabled ? "已啟用" : "已停用"}Model自定義功能`);
+./templates/admin.html:981:                showToast("更新配置失敗");
+./templates/admin.html:986:            // Save configuration
+./templates/admin.html:989:                const response = await fetch("/api/admin/config", {
+./templates/admin.html:990:                  method: "POST",
+./templates/admin.html:992:                    "Content-Type": "application/json",
+./templates/admin.html:994:                  credentials: "same-origin",
+./templates/admin.html:997:                if (!response.ok) throw new Error("保存失敗");
+./templates/admin.html:998:                showToast("配置已保存");
+./templates/admin.html:1000:                showToast("保存配置失敗");
+./templates/admin.html:1004:            // Load models
+./templates/admin.html:1008:                const response = await fetch("/api/admin/config");
+./templates/admin.html:1011:                // 確保 custom_models 存在
+./templates/admin.html:1017:                showToast("已重新載入配置檔案");
+./templates/admin.html:1019:                showToast("載入配置失敗");
+./templates/admin.html:1020:                console.error("載入配置錯誤:", error);
+./templates/admin.html:1021:                document.getElementById("errorMessage").classList.remove("hidden");
+./templates/admin.html:1022:                document.getElementById("loadingIndicator").classList.add("hidden");
+./templates/admin.html:1025:            // Save models
+./templates/admin.html:1030:                showToast("保存失敗");
+./templates/admin.html:1033:            // Fetch model list
+./templates/admin.html:1037:                document.getElementById("errorMessage").classList.add("hidden");
+./templates/admin.html:1038:                const response = await fetch("/api/models");
+./templates/admin.html:1043:                    ? "R"
+./templates/admin.html:1045:                    ? "X"
+./templates/admin.html:1046:                    : "-",
+./templates/admin.html:1048:                // 添加自訂模型
+./templates/admin.html:1051:                    // 檢查是否已存在於模型列表
+./templates/admin.html:1060:                          ? "R"
+./templates/admin.html:1062:                          ? "X"
+./templates/admin.html:1063:                          : "-",
+./templates/admin.html:1070:                showToast("已更新Models列表");
+./templates/admin.html:1072:                console.error("獲取Models列表失敗:", error);
+./templates/admin.html:1073:                document.getElementById("errorMessage").classList.remove("hidden");
+./templates/admin.html:1074:                document.getElementById("loadingIndicator").classList.add("hidden");
+./templates/admin.html:1075:                showToast("獲取Models列表失敗");
+./src/cache.rs:9:/// Global Sled DB
+./src/cache.rs:12:/// Get in-memory sled::Db, initialized once
+./src/cache.rs:18:            .expect("Failed to initialize sled memory cache")
+./src/cache.rs:22:/// Store config into sled
+./src/cache.rs:28:                .map_err(|e| format!("Failed to write to sled cache: {}", e))?;
+./src/cache.rs:32:        Err(e) => Err(format!("Failed to serialize settings: {}", e)),
+./src/cache.rs:36:/// Read config
+./src/cache.rs:43:                error!("❌ Failed to parse sled settings: {}", e);
+./src/cache.rs:44:                Err(format!("Failed to parse JSON: {}", e))
+./src/cache.rs:49:            error!("❌ Failed to read sled settings: {}", e);
+./src/cache.rs:50:            Err(format!("Failed to load: {}", e))
+./src/cache.rs:55:/// Remove a key
+./src/cache.rs:59:        warn!("⚠️ Error removing cache from sled: {}", e);
+./src/cache.rs:64:// Get settings from cache or YAML
+./src/cache.rs:66:    let cache_key = "models.yaml";
+./src/cache.rs:67:    // Try sled read first (cache priority, fallback to yaml if failed)
+./src/cache.rs:70:            debug!("✅ Sled cache hit: {}", cache_key);
+./src/cache.rs:74:            debug!("💾 No setting in sled, reading from YAML...");
+./src/cache.rs:81:                    warn!("⚠️ Failed to load settings from YAML, fallback to default: {}", e);
+./src/cache.rs:93:// Get TTL for URL cache
+./src/cache.rs:95:    let ttl_seconds = std::env::var("URL_CACHE_TTL_SECONDS")
+./src/cache.rs:98:        .unwrap_or(3 * 24 * 60 * 60); // Default 3 days
+./src/cache.rs:102:// Get maximum URL cache capacity (MB)
+./src/cache.rs:104:    std::env::var("URL_CACHE_SIZE_MB")
+./src/cache.rs:107:        .unwrap_or(100) // Default 100MB
+./src/cache.rs:110:// Store URL in cache with expiration time
+./src/cache.rs:113:    let tree_name = "urls";
+./src/cache.rs:115:    let key = format!("url:{}", original_url);
+./src/cache.rs:116:    // Current time + TTL
+./src/cache.rs:120:    // Convert to timestamp
+./src/cache.rs:125:    // Store data in format "expire_time:poe_url:size"
+./src/cache.rs:126:    // Ensure colons in URLs won't interfere with parsing
+./src/cache.rs:127:    let store_value = format!("{}:{}:{}", expires_secs, poe_url, size_bytes);
+./src/cache.rs:131:                debug!("✅ URL cache updated: {}", original_url);
+./src/cache.rs:134:                error!("❌ Failed to save URL cache: {}", e);
+./src/cache.rs:138:        error!("❌ Failed to open URL cache tree");
+./src/cache.rs:140:    // Maintain cache size
+./src/cache.rs:144:// Get cached URL
+./src/cache.rs:147:    let tree_name = "urls";
+./src/cache.rs:148:    let key = format!("url:{}", original_url);
+./src/cache.rs:152:            error!("❌ Failed to open URL cache tree: {}", e);
+./src/cache.rs:161:                    // Correct format: "expires_at:poe_url:size"
+./src/cache.rs:167:                        // Check if expired
+./src/cache.rs:169:                            // Important fix: URLs may contain colons, need proper handling
+./src/cache.rs:170:                            // Take first part as expiration time, last as size, middle as URL
+./src/cache.rs:172:                            let poe_url = parts[1..(parts.len() - 1)].join(":");
+./src/cache.rs:174:                                // Update expiration time (extend TTL)
+./src/cache.rs:176:                                debug!("✅ URL cache hit and renewed: {}", original_url);
+./src/cache.rs:180:                            // Expired, delete item
+./src/cache.rs:183:                                debug!("🗑️ Deleting expired URL cache: {}", original_url);
+./src/cache.rs:189:                error!("❌ Invalid URL cache value format");
+./src/cache.rs:195:            error!("❌ Failed to read URL cache: {}", e);
+./src/cache.rs:201:// Refresh URL cache TTL
+./src/cache.rs:206:// Save base64 hash to cache
+./src/cache.rs:209:    let tree_name = "base64";
+./src/cache.rs:211:    let key = format!("base64:{}", hash);
+./src/cache.rs:213:    // Current time + TTL
+./src/cache.rs:217:    // Convert to timestamp
+./src/cache.rs:222:    // Store data in format "expires_secs:poe_url:size_bytes"
+./src/cache.rs:223:    let store_value = format!("{}:{}:{}", expires_secs, poe_url, size_bytes);
+./src/cache.rs:225:        "💾 Saving base64 cache | Hash: {}... | Size: {}bytes",
+./src/cache.rs:231:                debug!("✅ Base64 cache updated | Hash: {}...", hash_prefix);
+./src/cache.rs:234:                error!("❌ Failed to save base64 cache: {} | Hash: {}...", e, hash_prefix);
+./src/cache.rs:238:            error!("❌ Failed to open base64 cache tree: {} | Hash: {}...", e, hash_prefix);
+./src/cache.rs:243:// Get URL from base64 hash in cache
+./src/cache.rs:246:    debug!("🔍 Querying base64 cache | Hash: {}...", hash_prefix);
+./src/cache.rs:248:    let tree_name = "base64";
+./src/cache.rs:249:    let key = format!("base64:{}", hash);
+./src/cache.rs:253:            error!("❌ Failed to open base64 cache tree: {}", e);
+./src/cache.rs:267:                        // Check if expired
+./src/cache.rs:269:                            // Important fix: URLs may contain colons, need proper handling
+./src/cache.rs:271:                            let poe_url = parts[1..(parts.len() - 1)].join(":");
+./src/cache.rs:273:                                // Update expiration time (extend TTL)
+./src/cache.rs:275:                                debug!("✅ Base64 cache hit and renewed | Hash: {}...", hash_prefix);
+./src/cache.rs:278:                                error!("❌ Invalid base64 cache size: {}", size_str);
+./src/cache.rs:281:                            // Expired, delete item
+./src/cache.rs:284:                                debug!("🗑️ Deleting expired base64 cache | Hash: {}...", hash_prefix);
+./src/cache.rs:288:                        error!("❌ Invalid base64 cache timestamp: {}", parts[0]);
+./src/cache.rs:292:                        "❌ Base64 cache format error: {} (parts: {})",
+./src/cache.rs:298:                error!("❌ Base64 cache value cannot be parsed as string");
+./src/cache.rs:304:            error!("❌ Failed to read base64 cache: {} | Hash: {}...", e, hash_prefix);
+./src/cache.rs:310:// Refresh base64 cache TTL
+./src/cache.rs:315:// Estimate base64 data size
+./src/cache.rs:317:    if let Some(base64_part) = data_url.split(";base64,").nth(1) {
+./src/cache.rs:323:// Check and control cache size
+./src/cache.rs:328:    // Calculate current cache total size
+./src/cache.rs:332:    // Collect url tree items
+./src/cache.rs:333:    if let Ok(tree) = db.open_tree("urls") {
+./src/cache.rs:341:                            entries.push((expires_secs, "urls".to_string(), key.to_vec(), size));
+./src/cache.rs:349:    // Collect base64 tree items
+./src/cache.rs:350:    if let Ok(tree) = db.open_tree("base64") {
+./src/cache.rs:358:                            entries.push((expires_secs, "base64".to_string(), key.to_vec(), size));
+./src/cache.rs:366:    // If exceeding max size, clean space
+./src/cache.rs:369:        let mut bytes_to_free = excess_bytes + (max_size_bytes / 10); // Free 10% extra space
+./src/cache.rs:371:            "⚠️ Cache size ({:.2}MB) exceeds limit ({:.2}MB), need to free {:.2}MB",
+./src/cache.rs:377:        // Sort by expiration time (delete earliest first)
+./src/cache.rs:387:                    error!("❌ Failed to delete cache item: {}", e);
+./src/cache.rs:396:            info!("🗑️ Freed {} cache items", deleted);
+./src/types.rs:9:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:11:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:13:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:16:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:26:// Define enum for OpenAI content format (String or array)
+./src/types.rs:34:// Define item type for OpenAI content array
+./src/types.rs:36:#[serde(tag = "type")]
+./src/types.rs:38:    #[serde(rename = "text")]
+./src/types.rs:40:    #[serde(rename = "image_url")]
+./src/types.rs:44:// Define structure for image_url content
+./src/types.rs:48:    // Can extend other fields like detail
+./src/types.rs:51:// Update Message struct to use new OpenAiContent
+./src/types.rs:81:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:106:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:127:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:140:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:142:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/types.rs:144:    #[serde(skip_serializing_if = "Option::is_none")]
+./src/poe_client.rs:12:    pub client: PoeClient, // Made public for external access
+./src/poe_client.rs:18:        info!("🔑 Initializing POE client | Model: {}", model);
+./src/poe_client.rs:30:            "📤 Sending streaming request | Message count: {} | Temperature: {:?}",
+./src/poe_client.rs:39:                    "✅ Streaming request established successfully | Duration: {}",
+./src/poe_client.rs:46:                    "❌ Streaming request failed | Error: {} | Duration: {}",
+./src/poe_client.rs:56:// Function to convert OpenAI message format to Poe message format
+./src/poe_client.rs:70:                        debug!("🖼️  Processing image URL: {}", image_url.url);
+./src/poe_client.rs:84:        content: texts.join("\n"),
+./src/poe_client.rs:86:            debug!("📎 Added {} attachments to message", attachments.len());
+./src/poe_client.rs:91:        content_type: "text/markdown".to_string(),
+./src/poe_client.rs:104:        "📝 Creating chat request | Model: {} | Message count: {} | Temperature: {:?} | Tool count: {:?}",
+./src/poe_client.rs:110:    // Get models.yaml config from cache
+./src/poe_client.rs:112:    // Check if model needs replace_response processing
+./src/poe_client.rs:114:        // Use cached config
+./src/poe_client.rs:120:        "🔍 Model {} replace_response setting: {}",
+./src/poe_client.rs:128:                // Always convert assistant to bot
+./src/poe_client.rs:129:                "assistant" => Some("bot".to_string()),
+./src/poe_client.rs:130:                // Always convert developer to user
+./src/poe_client.rs:131:                "developer" => Some("user".to_string()),
+./src/poe_client.rs:132:                // Only convert system to user if replace_response is true
+./src/poe_client.rs:133:                "system" if should_replace_response => Some("user".to_string()),
+./src/poe_client.rs:134:                // Keep original otherwise
+./src/poe_client.rs:137:            // Convert OpenAI message to Poe message
+./src/poe_client.rs:139:            // Record conversion result
+./src/poe_client.rs:141:                "🔄 Processing message | Original role: {} | Converted role: {} | Content length: {} | Attachments: {}",
+./src/poe_client.rs:150:    // Process tool result messages
+./src/poe_client.rs:152:    // Check for tool role messages and convert to ToolResult
+./src/poe_client.rs:153:    if messages.iter().any(|msg| msg.role == "tool") {
+./src/poe_client.rs:156:            if msg.role == "tool" {
+./src/poe_client.rs:157:                // Extract text content
+./src/poe_client.rs:160:                    debug!("🔧 Processing tool result | tool_call_id: {}", tool_call_id);
+./src/poe_client.rs:162:                        role: "tool".to_string(),
+./src/poe_client.rs:164:                        name: "unknown".to_string(),
+./src/poe_client.rs:168:                    debug!("⚠️ Failed to extract tool_call_id from tool message");
+./src/poe_client.rs:175:                "🔧 Created {} tool results",
+./src/poe_client.rs:181:        version: "1.1".to_string(),
+./src/poe_client.rs:182:        r#type: "query".to_string(),
+./src/poe_client.rs:185:        user_id: "".to_string(),
+./src/poe_client.rs:186:        conversation_id: "".to_string(),
+./src/poe_client.rs:187:        message_id: "".to_string(),
+./src/poe_client.rs:196:// Extract tool_call_id from tool message
+./src/poe_client.rs:198:    // Try to parse JSON formatted content
+./src/poe_client.rs:200:        if let Some(tool_call_id) = json.get("tool_call_id").and_then(|v| v.as_str()) {
+./src/poe_client.rs:204:    // Try simple text parsing
+./src/poe_client.rs:205:    if let Some(start) = content.find("tool_call_id") {
+./src/poe_client.rs:206:        if let Some(id_start) = content[start..].find('"') {
+./src/poe_client.rs:207:            if let Some(id_end) = content[start + id_start + 1..].find('"') {
+./src/evert.rs:8:// Event accumulation context for collecting state during event processing
+./src/evert.rs:25:// Event handler trait
+./src/evert.rs:30:// Text event handler
+./src/evert.rs:37:                "📝 Processing text event | Length: {} | is_replace_mode: {} | first_text_processed: {}",
+./src/evert.rs:43:            // If in replace mode and first text not processed, need to merge replace buffer with new text
+./src/evert.rs:45:                debug!("📝 Merging first Text event with ReplaceResponse");
+./src/evert.rs:49:                    // Return merged content to send fragment
+./src/evert.rs:52:                    // No replace_buffer, directly add to content
+./src/evert.rs:57:            // If in replace mode and first text processed, reset to normal mode
+./src/evert.rs:59:                debug!("🔄 Resetting replace mode to normal text mode");
+./src/evert.rs:63:                // Move replace_buffer content to content
+./src/evert.rs:67:                // Directly add new text to content
+./src/evert.rs:71:                // Non-replace mode, directly accumulate and return text
+./src/evert.rs:80:// File event handler
+./src/evert.rs:87:                "🖼️  Processing file event | Name: {} | URL: {}",
+./src/evert.rs:94:            // If replace_buffer exists, process and send it
+./src/evert.rs:96:                // Only process if not sent yet
+./src/evert.rs:98:                if content.contains(&format!("[{}]", file_data.inline_ref)) {
+./src/evert.rs:100:                        "🖼️ Detected ReplaceResponse with image reference [{}], processing immediately",
+./src/evert.rs:103:                    // Process image reference in text
+./src/evert.rs:105:                    let img_marker = format!("[{}]", file_data.inline_ref);
+./src/evert.rs:106:                    let replacement = format!("({})", file_data.url);
+./src/evert.rs:108:                    ctx.image_urls_sent = true; // Mark as sent
+./src/evert.rs:117:// ReplaceResponse event handler
+./src/evert.rs:124:                "🔄 Processing ReplaceResponse event | Length: {}",
+./src/evert.rs:131:            // Check if file reference needs processing
+./src/evert.rs:133:                debug!("🔄 ReplaceResponse may contain image reference, checking and processing");
+./src/evert.rs:134:                // Process image reference in text
+./src/evert.rs:139:                    let img_marker = format!("[{}]", ref_id);
+./src/evert.rs:141:                        let replacement = format!("({})", file_data.url);
+./src/evert.rs:144:                        debug!("🖼️  Replacing image reference | ID: {} | URL: {}", ref_id, file_data.url);
+./src/evert.rs:149:                    // If indeed contains image reference, send processed content immediately
+./src/evert.rs:150:                    debug!("✅ ReplaceResponse contains image reference, sending processed content immediately");
+./src/evert.rs:151:                    ctx.image_urls_sent = true; // Mark as sent
+./src/evert.rs:156:            // Defer ReplaceResponse output, wait for subsequent Text events
+./src/evert.rs:157:            debug!("🔄 Deferring ReplaceResponse output, waiting for Text events");
+./src/evert.rs:159:        None // Don't send directly, wait to merge with Text
+./src/evert.rs:163:// Json event handler (for Tool Calls)
+./src/evert.rs:168:        debug!("📝 Processing JSON event");
+./src/evert.rs:170:            debug!("🔧 Processing tool calls, count: {}", tool_calls.len());
+./src/evert.rs:172:            // Return Some to indicate tool calls need to be sent
+./src/evert.rs:173:            return Some("tool_calls".to_string());
+./src/evert.rs:179:// Error event handler
+./src/evert.rs:185:            error!("❌ Processing error event: {}", text);
+./src/evert.rs:188:            return Some("error".to_string());
+./src/evert.rs:194:// Done event handler
+./src/evert.rs:199:        debug!("✅ Processing Done event");
+./src/evert.rs:202:        // Only process if image URLs not sent yet
+./src/evert.rs:205:                debug!("🔍 Checking for unprocessed image references on completion");
+./src/evert.rs:210:                let img_marker = format!("[{}]", ref_id);
+./src/evert.rs:212:                    let replacement = format!("({})", file_data.url);
+./src/evert.rs:216:                        "🖼️ Replacing image reference before completion | ID: {} | URL: {}",
+./src/evert.rs:223:                debug!("✅ Processed image references before completion");
+./src/evert.rs:224:                ctx.image_urls_sent = true; // Mark as sent
+./src/evert.rs:229:        Some("done".to_string())
+./src/evert.rs:233:// Event handler manager
+./src/main.rs:17:    if key == "ADMIN_PASSWORD" {
+./src/main.rs:18:        debug!("🔧 Environment variable {} = {}", key, "*".repeat(value.len()));
+./src/main.rs:20:        debug!("🔧 Environment variable {} = {}", key, value);
+./src/main.rs:34:    info!("🚀 Log system initialized, log level: {}", log_level);
+./src/main.rs:38:    // Record cache settings
+./src/main.rs:39:    let cache_ttl_seconds = std::env::var("URL_CACHE_TTL_SECONDS")
+./src/main.rs:43:    let cache_size_mb = std::env::var("URL_CACHE_SIZE_MB")
+./src/main.rs:55:            "{} days {} hours {} minutes {} seconds",
+./src/main.rs:59:        format!("{} hours {} minutes {} seconds", ttl_hours, ttl_mins, ttl_secs)
+./src/main.rs:61:        format!("{} minutes {} seconds", ttl_mins, ttl_secs)
+./src/main.rs:63:        format!("{} seconds", ttl_secs)
+./src/main.rs:67:        "📦 Poe CDN URL cache settings | TTL: {} | Max size: {}MB",
+./src/main.rs:74:    let log_level = get_env_or_default("LOG_LEVEL", "debug");
+./src/main.rs:77:    // Initialize cache settings
+./src/main.rs:80:    // Initialize global rate limit
+./src/main.rs:85:    // Show rate limit settings
+./src/main.rs:86:    let rate_limit_ms = std::env::var("RATE_LIMIT_MS")
+./src/main.rs:92:        info!("⚙️  Global rate limit: Disabled (RATE_LIMIT_MS=0)");
+./src/main.rs:94:        info!("⚙️  Global rate limit: Enabled ({}ms per request)", rate_limit_ms);
+./src/main.rs:97:    let host = get_env_or_default("HOST", "0.0.0.0");
+./src/main.rs:98:    let port = get_env_or_default("PORT", "8080");
+./src/main.rs:99:    get_env_or_default("ADMIN_USERNAME", "admin");
+./src/main.rs:100:    get_env_or_default("ADMIN_PASSWORD", "123456");
+./src/main.rs:101:    let config_dir = get_env_or_default("CONFIG_DIR", "./");
+./src/main.rs:102:    let config_path = Path::new(&config_dir).join("models.yaml");
+./src/main.rs:103:    info!("📁 Config file path: {}", config_path.display());
+./src/main.rs:105:    let salvo_max_size = get_env_or_default("MAX_REQUEST_SIZE", "1073741824")
+./src/main.rs:107:        .unwrap_or(1024 * 1024 * 1024); // Default 1GB
+./src/main.rs:109:    let bind_address = format!("{}:{}", host, port);
+./src/main.rs:110:    info!("🌟 Starting Poe API to OpenAI API service...");
+./src/main.rs:111:    debug!("📍 Service bind address: {}", bind_address);
+./src/main.rs:113:    // Initialize Sled DB
+./src/main.rs:115:    info!("💾 Memory database initialized successfully");
+./src/main.rs:120:            Router::with_path("models")
+./src/main.rs:125:            Router::with_path("chat/completions")
+./src/main.rs:131:            Router::with_path("api/models")
+./src/main.rs:136:            Router::with_path("v1/models")
+./src/main.rs:141:            Router::with_path("v1/chat/completions")
+./src/main.rs:149:        .push(Router::with_path("static/{**path}").get(StaticDir::new(["static"])))
+./src/main.rs:153:    info!("🛣️  API routes configured successfully");
+./src/main.rs:156:    info!("🎯 Service started and listening at {}", bind_address);
+./src/handlers/limit.rs:8:// Global variable initialized in main.rs
+./src/handlers/limit.rs:12:/// Get rate limit interval (milliseconds)
+./src/handlers/limit.rs:13:/// Returns None means rate limit disabled
+./src/handlers/limit.rs:15:    let ms = std::env::var("RATE_LIMIT_MS")
+./src/handlers/limit.rs:20:    // If value is 0, rate limit disabled
+./src/handlers/limit.rs:35:    // Get rate limit interval, None means disabled
+./src/handlers/limit.rs:45:                    "⏳ Request triggered global rate limit, delaying {:?}, interval: {:?}",
+./src/handlers/limit.rs:54:        debug!("🚫 Global rate limit disabled (RATE_LIMIT_MS=0)");
+./src/handlers/cors.rs:5:/// Check if header is safe
+./src/handlers/cors.rs:9:    // Exclude empty strings
+./src/handlers/cors.rs:14:    // Blacklist: explicit malicious headers
+./src/handlers/cors.rs:15:    if matches!(header_lower.as_str(), "cookie" | "set-cookie") {
+./src/handlers/cors.rs:19:    // Whitelist: allowed header patterns
+./src/handlers/cors.rs:20:    // 1. X- prefixed custom headers (like X-Stainless-*)
+./src/handlers/cors.rs:21:    // 2. Standard HTTP headers
+./src/handlers/cors.rs:22:    header_lower.starts_with("x-")
+./src/handlers/cors.rs:25:            "accept"
+./src/handlers/cors.rs:26:                | "accept-encoding"
+./src/handlers/cors.rs:27:                | "accept-language"
+./src/handlers/cors.rs:28:                | "authorization"
+./src/handlers/cors.rs:29:                | "cache-control"
+./src/handlers/cors.rs:30:                | "connection"
+./src/handlers/cors.rs:31:                | "content-type"
+./src/handlers/cors.rs:32:                | "user-agent"
+./src/handlers/cors.rs:33:                | "referer"
+./src/handlers/cors.rs:34:                | "origin"
+./src/handlers/cors.rs:35:                | "pragma"
+./src/handlers/cors.rs:36:                | "sec-fetch-dest"
+./src/handlers/cors.rs:37:                | "sec-fetch-mode"
+./src/handlers/cors.rs:38:                | "sec-fetch-site"
+./src/handlers/cors.rs:42:/// Parse client request headers and perform security filtering
+./src/handlers/cors.rs:64:    // Get Origin header from request
+./src/handlers/cors.rs:69:        .unwrap_or("null");
+./src/handlers/cors.rs:71:    // Record request origin for debugging
+./src/handlers/cors.rs:72:    debug!("📡 Received request from Origin: {}", origin);
+./src/handlers/cors.rs:74:    // Set CORS headers
+./src/handlers/cors.rs:81:            debug!("⚠️ Invalid Origin header: {}, Error: {}", origin, e);
+./src/handlers/cors.rs:84:                HeaderValue::from_static("null"),
+./src/handlers/cors.rs:91:        HeaderValue::from_static("true"),
+./src/handlers/cors.rs:94:    // Add Vary header to all responses to indicate response varies by Origin header
+./src/handlers/cors.rs:96:        .insert(header::VARY, HeaderValue::from_static("Origin"));
+./src/handlers/cors.rs:98:    // If it's an OPTIONS request, handle it and stop further processing
+./src/handlers/cors.rs:103:        // Not an OPTIONS request, continue normal processing
+./src/handlers/cors.rs:108:/// Special handler for CORS preflight requests
+./src/handlers/cors.rs:110:    info!("🔍 Processing OPTIONS preflight request: {}", req.uri());
+./src/handlers/cors.rs:112:    // Set standard CORS preflight response headers
+./src/handlers/cors.rs:115:        HeaderValue::from_static("GET, POST, OPTIONS, PUT, DELETE, PATCH, HEAD"),
+./src/handlers/cors.rs:118:    // Base hardcoded headers (maintain backward compatibility)
+./src/handlers/cors.rs:120:        "Authorization",
+./src/handlers/cors.rs:121:        "Content-Type",
+./src/handlers/cors.rs:122:        "User-Agent",
+./src/handlers/cors.rs:123:        "Accept",
+./src/handlers/cors.rs:124:        "Origin",
+./src/handlers/cors.rs:125:        "X-Requested-With",
+./src/handlers/cors.rs:126:        "Access-Control-Request-Method",
+./src/handlers/cors.rs:127:        "Access-Control-Request-Headers",
+./src/handlers/cors.rs:128:        "Accept-Encoding",
+./src/handlers/cors.rs:129:        "Accept-Language",
+./src/handlers/cors.rs:130:        "Cache-Control",
+./src/handlers/cors.rs:131:        "Connection",
+./src/handlers/cors.rs:132:        "Referer",
+./src/handlers/cors.rs:133:        "Sec-Fetch-Dest",
+./src/handlers/cors.rs:134:        "Sec-Fetch-Mode",
+./src/handlers/cors.rs:135:        "Sec-Fetch-Site",
+./src/handlers/cors.rs:136:        "Pragma",
+./src/handlers/cors.rs:137:        "X-Api-Key",
+./src/handlers/cors.rs:140:    // Parse client request dynamic headers
+./src/handlers/cors.rs:143:    // Merge base headers and dynamic headers
+./src/handlers/cors.rs:154:    // Build final headers string
+./src/handlers/cors.rs:155:    let headers_str = all_headers.join(", ");
+./src/handlers/cors.rs:157:    // Record debug information
+./src/handlers/cors.rs:159:        info!("➕ Dynamic added headers: {:?}", dynamic_headers);
+./src/handlers/cors.rs:161:    info!("📋 Final allowed headers: {}", headers_str);
+./src/handlers/cors.rs:163:    // Set Access-Control-Allow-Headers
+./src/handlers/cors.rs:170:            // Fallback: use base headers if dynamic headers fail
+./src/handlers/cors.rs:171:            debug!("⚠️ Dynamic headers setup failed: {}, using base headers", e);
+./src/handlers/cors.rs:175:                    "Authorization, Content-Type, User-Agent, Accept, Origin, \
+./src/handlers/cors.rs:179:                    Sec-Fetch-Site, Pragma, X-Api-Key",
+./src/handlers/cors.rs:187:        HeaderValue::from_static("3600"),
+./src/handlers/cors.rs:190:    // Add Vary header to indicate response varies by these request headers
+./src/handlers/cors.rs:193:        HeaderValue::from_static("Access-Control-Request-Method, Access-Control-Request-Headers"),
+./src/handlers/cors.rs:196:    // Set correct status code: 204 No Content
+./src/handlers/models.rs:12:// Note: This cache doesn't apply to /api/models path
+./src/handlers/models.rs:18:    info!("📋 Received request to get model list | Path: {}", path);
+./src/handlers/models.rs:21:    // Handle /api/models special path (no cache) ---
+./src/handlers/models.rs:22:    if path == "/api/models" {
+./src/handlers/models.rs:23:        info!("⚡️ api/models path: directly from Poe (no cache)");
+./src/handlers/models.rs:24:        match get_model_list(Some("zh-Hant")).await {
+./src/handlers/models.rs:40:                    info!("🔄 Updated API_MODELS_CACHE after /api/models request.");
+./src/handlers/models.rs:44:                    "object": "list",
+./src/handlers/models.rs:45:                    "data": &*models_arc
+./src/handlers/models.rs:50:                    "✅ [/api/models] Successfully got unfiltered model list and updated cache | Model count: {} | Processing time: {}",
+./src/handlers/models.rs:51:                    models_arc.len(), // Use Arc length
+./src/handlers/models.rs:59:                    "❌ [/api/models] Failed to get model list | Error: {} | Duration: {}",
+./src/handlers/models.rs:64:                res.render(Json(json!({ "error": e.to_string() })));
+./src/handlers/models.rs:73:    debug!("🔍 Config enabled status (from cache): {}", is_enabled);
+./src/handlers/models.rs:77:        .clone() // Clone HashMap from Arc<Config>
+./src/handlers/models.rs:83:        info!("⚙️ Merging cached Poe API list with models.yaml (enabled)");
+./src/handlers/models.rs:89:            // Cache hit
+./src/handlers/models.rs:90:            debug!("✅ Model cache hit.");
+./src/handlers/models.rs:94:            // Cache miss
+./src/handlers/models.rs:95:            debug!("❌ Model cache miss. Attempting to populate...");
+./src/handlers/models.rs:99:            // Check again to prevent race condition during write lock acquisition
+./src/handlers/models.rs:101:                debug!("✅ API model cache filled by another thread during write lock wait.");
+./src/handlers/models.rs:104:                // Cache is indeed empty, fetch from API
+./src/handlers/models.rs:105:                info!("⏳ Fetching models from API to populate cache...");
+./src/handlers/models.rs:106:                match get_model_list(Some("zh-Hant")).await {
+./src/handlers/models.rs:119:                        info!("✅ API models cache populated successfully.");
+./src/handlers/models.rs:122:                        // If cache population failed, return error
+./src/handlers/models.rs:123:                        let duration = start_time.elapsed(); // Calculate duration
+./src/handlers/models.rs:125:                            "❌ Failed to populate API models cache: {} | Duration: {}.",
+./src/handlers/models.rs:127:                            crate::utils::format_duration(duration) // Use duration in log
+./src/handlers/models.rs:131:                            json!({ "error": format!("Failed to retrieve model list for cache population: {}", e) }),
+./src/handlers/models.rs:152:                    // Found in YAML: check if enabled, apply mapping if enabled
+./src/handlers/models.rs:157:                                "🔄 API model renamed (YAML enabled): {} -> {}",
+./src/handlers/models.rs:163:                                "✅ Keep API model (YAML enabled, no mapping): {}",
+./src/handlers/models.rs:175:                        debug!("❌ Exclude API model (YAML disabled): {}", api_model_id_lower);
+./src/handlers/models.rs:179:                    debug!("✅ Keep API model (not in YAML): {}", api_model_id_lower);
+./src/handlers/models.rs:190:        // Process custom models, add to processed models list
+./src/handlers/models.rs:193:                info!("📋 Processing custom models | Count: {}", custom_models.len());
+./src/handlers/models.rs:196:                    // Check if this ID already exists in processed models
+./src/handlers/models.rs:198:                        // Check if enable: false configured in yaml_config_map
+./src/handlers/models.rs:201:                                debug!("❌ Exclude custom model (YAML disabled): {}", model_id);
+./src/handlers/models.rs:206:                        debug!("➕ Adding custom model: {}", model_id);
+./src/handlers/models.rs:209:                            object: "model".to_string(),
+./src/handlers/models.rs:216:                                .unwrap_or_else(|| "poe".to_string()),
+./src/handlers/models.rs:224:            "object": "list",
+./src/handlers/models.rs:225:            "data": processed_models_enabled
+./src/handlers/models.rs:230:            "✅ Successfully got processed model list | Source: {} | Model count: {} | Processing time: {}",
+./src/handlers/models.rs:231:            "YAML + Cached API",
+./src/handlers/models.rs:238:        info!("🔌 YAML disabled, directly getting model list from Poe API (no cache, no YAML rules)...");
+./src/handlers/models.rs:240:        match get_model_list(Some("zh-Hant")).await {
+./src/handlers/models.rs:252:                    "object": "list",
+./src/handlers/models.rs:253:                    "data": lowercase_models
+./src/handlers/models.rs:257:                    "✅ [Direct Poe] Successfully got model list directly | Model count: {} | Processing time: {}",
+./src/handlers/models.rs:266:                    "❌ [Direct Poe] Failed to get model list directly | Error: {} | Duration: {}",
+./src/handlers/models.rs:272:                    json!({ "error": format!("Failed to get models directly from API: {}", e) }),
+./src/handlers/admin.rs:12:#[template(path = "admin.html")]
+./src/handlers/admin.rs:34:                res.render(Json(json!({ "error": e.to_string() })));
+./src/handlers/admin.rs:36:                info!("✅ models.yaml saved successfully.");
+./src/handlers/admin.rs:37:                // Sync write to sled cache
+./src/handlers/admin.rs:38:                let _ = save_config_sled("models.yaml", &config);
+./src/handlers/admin.rs:40:                res.render(Json(json!({ "status": "success" })));
+./src/handlers/admin.rs:45:            res.render(Json(json!({ "error": e.to_string() })));
+./src/handlers/admin.rs:51:    let config_path = get_config_path("models.yaml");
+./src/handlers/admin.rs:56:                // Ensure custom_models field exists
+./src/handlers/admin.rs:68:            custom_models: Some(Vec::new()), // Initialize as empty array instead of None
+./src/handlers/admin.rs:75:    let config_path = get_config_path("models.yaml");
+./src/handlers/admin.rs:81:    info!("🗑️  Clearing models.yaml config cache...");
+./src/handlers/admin.rs:82:    remove_config_sled("models.yaml");
+./src/handlers/admin.rs:90:            std::env::var("ADMIN_USERNAME").unwrap_or_else(|_| "admin".to_string());
+./src/handlers/admin.rs:92:            std::env::var("ADMIN_PASSWORD").unwrap_or_else(|_| "123456".to_string());
+./src/handlers/admin.rs:100:        .hoop(auth_handler) // Add authentication middleware
+./src/handlers/admin.rs:101:        .push(Router::with_path("admin").get(admin_page))
+./src/handlers/admin.rs:103:            Router::with_path("api/admin/config")
+./src/handlers/chat.rs:26:    info!("📝 Received new chat completion request");
+./src/handlers/chat.rs:28:    let max_size: usize = std::env::var("MAX_REQUEST_SIZE")
+./src/handlers/chat.rs:29:        .unwrap_or_else(|_| "1073741824".to_string())
+./src/handlers/chat.rs:33:    // Get models.yaml config from cache
+./src/handlers/chat.rs:35:    debug!("🔧 Getting config from cache | Enabled status: {:?}", config.enable);
+./src/handlers/chat.rs:37:    // Validate authorization
+./src/handlers/chat.rs:38:    let access_key = match req.headers().get("Authorization") {
+./src/handlers/chat.rs:40:            let auth_str = auth.to_str().unwrap_or("");
+./src/handlers/chat.rs:41:            if let Some(stripped) = auth_str.strip_prefix("Bearer ") {
+./src/handlers/chat.rs:42:                debug!("🔑 Validating token length: {}", stripped.len());
+./src/handlers/chat.rs:45:                error!("❌ Invalid authorization format");
+./src/handlers/chat.rs:47:                res.render(Json(json!({ "error": "Invalid Authorization" })));
+./src/handlers/chat.rs:52:            error!("❌ Missing authorization header");
+./src/handlers/chat.rs:54:            res.render(Json(json!({ "error": "Missing Authorization" })));
+./src/handlers/chat.rs:59:    // Parse request body
+./src/handlers/chat.rs:64:                    "📊 Request parsed successfully | Model: {} | Message count: {} | Stream: {:?}",
+./src/handlers/chat.rs:72:                error!("❌ JSON parse failed: {}", e);
+./src/handlers/chat.rs:76:                        message: format!("JSON parse failed: {}", e),
+./src/handlers/chat.rs:77:                        r#type: "invalid_request_error".to_string(),
+./src/handlers/chat.rs:78:                        code: "parse_error".to_string(),
+./src/handlers/chat.rs:86:            error!("❌ Request size exceeds limit or read failed: {}", e);
+./src/handlers/chat.rs:90:                    message: format!("Request size exceeds limit ({} bytes) or read failed: {}", max_size, e),
+./src/handlers/chat.rs:91:                    r#type: "invalid_request_error".to_string(),
+./src/handlers/chat.rs:92:                    code: "payload_too_large".to_string(),
+./src/handlers/chat.rs:100:    // Find mapped original model name
+./src/handlers/chat.rs:103:        // Check if requested model is a target of any mapping
+./src/handlers/chat.rs:112:            // If found mapping, use original model name
+./src/handlers/chat.rs:113:            debug!("🔄 Reverse model mapping: {} -> {}", requested_model, original_name);
+./src/handlers/chat.rs:116:            // If no mapping found, check for direct mapping
+./src/handlers/chat.rs:119:                    debug!("🔄 Direct model mapping: {} -> {}", requested_model, mapped_name);
+./src/handlers/chat.rs:122:                    // No mapping config, use original name
+./src/handlers/chat.rs:126:                // No config at all, use original name
+./src/handlers/chat.rs:131:        // Config disabled, use original name directly
+./src/handlers/chat.rs:134:    info!("🤖 Using model: {} (original: {})", display_model, original_model);
+./src/handlers/chat.rs:136:    // Create client
+./src/handlers/chat.rs:139:    // Process image_url in messages
+./src/handlers/chat.rs:142:        error!("❌ Failed to process file upload: {}", e);
+./src/handlers/chat.rs:146:                message: format!("Failed to process file upload: {}", e),
+./src/handlers/chat.rs:147:                r#type: "processing_error".to_string(),
+./src/handlers/chat.rs:148:                code: "file_processing_failed".to_string(),
+./src/handlers/chat.rs:155:    // Calculate prompt_tokens
+./src/handlers/chat.rs:157:    debug!("📊 Calculating prompt_tokens: {}", prompt_tokens);
+./src/handlers/chat.rs:160:    debug!("🔄 Request mode: {}", if stream { "streaming" } else { "non-streaming" });
+./src/handlers/chat.rs:162:    // Create chat request
+./src/handlers/chat.rs:173:    // Check if need to include usage statistics
+./src/handlers/chat.rs:179:    debug!("📊 Include usage statistics: {}", include_usage);
+./src/handlers/chat.rs:181:    // Create output generator
+./src/handlers/chat.rs:188:                // Process streaming response
+./src/handlers/chat.rs:191:                // Process non-streaming response
+./src/handlers/chat.rs:196:            error!("❌ Failed to create streaming request: {}", e);
+./src/handlers/chat.rs:198:            res.render(Json(json!({ "error": e.to_string() })));
+./src/handlers/chat.rs:203:    info!("✅ Request processing completed | Duration: {}", format_duration(duration));
+./src/handlers/chat.rs:206:// Process streaming response
+./src/handlers/chat.rs:217:        "🌊 Starting to process streaming response | ID: {} | Model: {} | Include usage: {}",
+./src/handlers/chat.rs:221:    // Set streaming response headers
+./src/handlers/chat.rs:223:        .insert(header::CONTENT_TYPE, "text/event-stream".parse().unwrap());
+./src/handlers/chat.rs:225:        .insert(header::CACHE_CONTROL, "no-cache".parse().unwrap());
+./src/handlers/chat.rs:227:        .insert(header::CONNECTION, "keep-alive".parse().unwrap());
+./src/handlers/chat.rs:229:    // Process event stream and generate output
+./src/handlers/chat.rs:237:        "✅ Streaming response processing completed | ID: {} | Duration: {}",
+./src/handlers/chat.rs:243:// Process non-streaming response
+./src/handlers/chat.rs:254:        "📦 Starting to process non-streaming response | ID: {} | Model: {} | Include usage: {}",
+./src/handlers/chat.rs:261:    // Process all events
+./src/handlers/chat.rs:266:                // Check for errors
+./src/handlers/chat.rs:268:                    error!("❌ Processing error: {:?}", error_response);
+./src/handlers/chat.rs:273:                // Check if completed
+./src/handlers/chat.rs:275:                    debug!("✅ Received completion event");
+./src/handlers/chat.rs:280:                error!("❌ Processing error: {}", e);
+./src/handlers/chat.rs:289:    // Create final response
+./src/handlers/chat.rs:295:        "✅ Non-streaming response processing completed | ID: {} | Duration: {}",
+./src/handlers/chat.rs:301:// Output generator - Convert EventContext to final output
+./src/handlers/chat.rs:322:    // Process file references, replace [ref_id] with (url)
+./src/handlers/chat.rs:335:            let img_marker = format!("[{}]", ref_id);
+./src/handlers/chat.rs:337:                let replacement = format!("({})", file_data.url);
+./src/handlers/chat.rs:339:                debug!("🖼️ Replacing image reference | ID: {} | URL: {}", ref_id, file_data.url);
+./src/handlers/chat.rs:345:            debug!("✅ Successfully replaced image reference");
+./src/handlers/chat.rs:348:                "⚠️ Text contains possible image reference format but no corresponding reference found: {}",
+./src/handlers/chat.rs:356:    // Calculate token usage
+./src/handlers/chat.rs:368:    // Create role chunk
+./src/handlers/chat.rs:371:            role: Some("assistant".to_string()),
+./src/handlers/chat.rs:377:            id: format!("chatcmpl-{}", self.id),
+./src/handlers/chat.rs:378:            object: "chat.completion.chunk".to_string(),
+./src/handlers/chat.rs:389:    // Create streaming chunk
+./src/handlers/chat.rs:403:            "🔧 Creating streaming chunk | ID: {} | Content length: {}",
+./src/handlers/chat.rs:408:            id: format!("chatcmpl-{}", self.id),
+./src/handlers/chat.rs:409:            object: "chat.completion.chunk".to_string(),
+./src/handlers/chat.rs:420:    // Create tool call chunk
+./src/handlers/chat.rs:432:            id: format!("chatcmpl-{}", self.id),
+./src/handlers/chat.rs:433:            object: "chat.completion.chunk".to_string(),
+./src/handlers/chat.rs:439:                finish_reason: Some("tool_calls".to_string()),
+./src/handlers/chat.rs:444:    // Create final complete response (non-streaming mode)
+./src/handlers/chat.rs:446:        // Process content including file reference replacement
+./src/handlers/chat.rs:452:        // Calculate tokens
+./src/handlers/chat.rs:454:        // Determine finish_reason
+./src/handlers/chat.rs:456:            "tool_calls".to_string()
+./src/handlers/chat.rs:458:            "stop".to_string()
+./src/handlers/chat.rs:461:            "📤 Preparing to send response | Content length: {} | Tool call count: {} | Finish reason: {}",
+./src/handlers/chat.rs:468:                "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+./src/handlers/chat.rs:472:        // Create response
+./src/handlers/chat.rs:474:            id: format!("chatcmpl-{}", self.id),
+./src/handlers/chat.rs:475:            object: "chat.completion".to_string(),
+./src/handlers/chat.rs:481:                    role: "assistant".to_string(),
+./src/handlers/chat.rs:497:                "prompt_tokens": prompt_tokens,
+./src/handlers/chat.rs:498:                "completion_tokens": completion_tokens,
+./src/handlers/chat.rs:499:                "total_tokens": total_tokens,
+./src/handlers/chat.rs:500:                "prompt_tokens_details": {"cached_tokens": 0}
+./src/handlers/chat.rs:506:    // Directly process streaming events without pre-reading
+./src/handlers/chat.rs:517:        // Directly use unfold logic to process event stream
+./src/handlers/chat.rs:524:                        debug!("✅ Streaming processing completed");
+./src/handlers/chat.rs:530:                            // Lock context and process event
+./src/handlers/chat.rs:535:                                // Process event and get content to send
+./src/handlers/chat.rs:539:                                // Check error
+./src/handlers/chat.rs:541:                                    debug!("❌ Error detected, terminating stream");
+./src/handlers/chat.rs:544:                                        Ok(format!("data: {}\n\n", error_json)),
+./src/handlers/chat.rs:549:                                // Check completion
+./src/handlers/chat.rs:551:                                    debug!("✅ Completion signal detected");
+./src/handlers/chat.rs:555:                                // Process returned content
+./src/handlers/chat.rs:559:                                            debug!("📝 Processing normal Text event");
+./src/handlers/chat.rs:565:                                            // Determine if need to send role chunk
+./src/handlers/chat.rs:578:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:586:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:591:                                        // Process file event, if returns content means image reference needs immediate processing
+./src/handlers/chat.rs:593:                                            debug!("🖼️ Processing file reference, generating output with URL");
+./src/handlers/chat.rs:595:                                            // Determine if need to send role chunk
+./src/handlers/chat.rs:608:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:616:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:621:                                        // If ReplaceResponse returns content, means contains image reference
+./src/handlers/chat.rs:623:                                            debug!("🔄 ReplaceResponse contains image reference, sending directly");
+./src/handlers/chat.rs:625:                                            // Determine if need to send role chunk
+./src/handlers/chat.rs:638:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:646:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:652:                                            debug!("🔧 Processing tool call");
+./src/handlers/chat.rs:663:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:668:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:673:                                        // If Done event returns content, means unprocessed image reference exists
+./src/handlers/chat.rs:675:                                            if chunk_content != "done" && !ctx_guard.image_urls_sent
+./src/handlers/chat.rs:678:                                                    "✅ Done event contains unprocessed image reference, sending final content"
+./src/handlers/chat.rs:682:                                                    Some("stop".to_string()),
+./src/handlers/chat.rs:686:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:687:                                                ctx_guard.image_urls_sent = true; // Mark as sent
+./src/handlers/chat.rs:689:                                                // Normal completion event
+./src/handlers/chat.rs:697:                                                        "tool_calls"
+./src/handlers/chat.rs:699:                                                        "stop"
+./src/handlers/chat.rs:702:                                                    "",
+./src/handlers/chat.rs:707:                                                        "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+./src/handlers/chat.rs:714:                                                    json_value["usage"] = serde_json::json!({
+./src/handlers/chat.rs:715:                                                        "prompt_tokens": prompt_tokens,
+./src/handlers/chat.rs:716:                                                        "completion_tokens": completion_tokens,
+./src/handlers/chat.rs:717:                                                        "total_tokens": total_tokens,
+./src/handlers/chat.rs:718:                                                        "prompt_tokens_details": {"cached_tokens": 0}
+./src/handlers/chat.rs:731:                                                        "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:736:                                                        Some(format!("data: {}\n\n", final_json));
+./src/handlers/chat.rs:740:                                            // No content completion event
+./src/handlers/chat.rs:745:                                                "tool_calls"
+./src/handlers/chat.rs:747:                                                "stop"
+./src/handlers/chat.rs:750:                                                "",
+./src/handlers/chat.rs:755:                                                    "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+./src/handlers/chat.rs:760:                                                json_value["usage"] = serde_json::json!({
+./src/handlers/chat.rs:761:                                                    "prompt_tokens": prompt_tokens,
+./src/handlers/chat.rs:762:                                                    "completion_tokens": completion_tokens,
+./src/handlers/chat.rs:763:                                                    "total_tokens": total_tokens,
+./src/handlers/chat.rs:764:                                                    "prompt_tokens_details": {"cached_tokens": 0}
+./src/handlers/chat.rs:777:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:782:                                                    Some(format!("data: {}\n\n", final_json));
+./src/handlers/chat.rs:787:                                        // Other event types, process if content exists
+./src/handlers/chat.rs:801:                                                    "data: {}\n\ndata: {}\n\n",
+./src/handlers/chat.rs:809:                                                    Some(format!("data: {}\n\n", json));
+./src/handlers/chat.rs:815:                                // If no output content but need to send role chunk, send it
+./src/handlers/chat.rs:825:                                    output_content = Some(format!("data: {}\n\n", role_json));
+./src/handlers/chat.rs:829:                            // Return output content
+./src/handlers/chat.rs:833:                                        "📤 Sending streaming chunk | Length: {}",
+./src/handlers/chat.rs:847:                                    // Empty output, continue processing
+./src/handlers/chat.rs:860:                                // No output, continue processing
+./src/handlers/chat.rs:868:                            error!("❌ Streaming processing error: {}", e);
+./src/handlers/chat.rs:872:                                Ok(format!("data: {}\n\n", error_json)),
+./src/handlers/chat.rs:877:                            debug!("⏹️ Event stream ended");
+./src/handlers/chat.rs:885:        // Add completion message
+./src/handlers/chat.rs:886:        let done_message = "data: [DONE]\n\n".to_string();
+./src/handlers/chat.rs:888:        // Filter empty messages and add completion message
+./src/utils.rs:14:// Process files/images in messages
+./src/utils.rs:19:    // Collect URLs needing processing
+./src/utils.rs:26:    // Collect all URLs needing processing in messages
+./src/utils.rs:31:                    if image_url.url.starts_with("data:") {
+./src/utils.rs:32:                        // Process data URL
+./src/utils.rs:33:                        debug!("🔍 Data URL detected");
+./src/utils.rs:37:                        // Process external URLs needing upload
+./src/utils.rs:38:                        debug!("🔍 External URL needing upload detected: {}", image_url.url);
+./src/utils.rs:47:    // Process external URLs
+./src/utils.rs:49:        debug!("🔄 Preparing to process {} external URLs", external_urls.len());
+./src/utils.rs:51:        // Split external URLs into cache hits and misses
+./src/utils.rs:58:            // Check cache
+./src/utils.rs:60:                debug!("✅ URL cache hit: {} -> {}", url, poe_url);
+./src/utils.rs:64:                        debug!("🔄 Replacing URL from cache: {}", poe_url);
+./src/utils.rs:69:                // Cache miss, need upload
+./src/utils.rs:70:                debug!("❌ URL cache miss: {}", url);
+./src/utils.rs:76:        // Upload uncached URLs
+./src/utils.rs:78:            debug!("🔄 Uploading {} uncached URLs", urls_to_upload.len());
+./src/utils.rs:89:                    debug!("✅ Successfully uploaded {} external URLs", responses.len());
+./src/utils.rs:91:                    // Update cache and save URL mapping
+./src/utils.rs:99:                        // Estimate size (default 1MB, can optimize later)
+./src/utils.rs:102:                        // Add to cache
+./src/utils.rs:109:                                    "🔄 URL replaced | Original: {} | Poe: {}",
+./src/utils.rs:118:                    error!("❌ Failed to upload external URL: {}", e);
+./src/utils.rs:121:                        format!("Failed to upload external URL: {}", e),
+./src/utils.rs:128:    // Process data URLs
+./src/utils.rs:130:        debug!("🔄 Preparing to process {} data URLs", data_urls.len());
+./src/utils.rs:132:        // Split into cache hits and misses
+./src/utils.rs:141:            debug!("🔍 Calculating data URL hash | Hash prefix: {}...", &hash[..8]);
+./src/utils.rs:143:            // Check cache
+./src/utils.rs:145:                debug!("✅ Base64 cache hit | Hash: {}... -> {}", &hash[..8], poe_url);
+./src/utils.rs:149:                        debug!("🔄 Replacing base64 from cache | URL: {}", poe_url);
+./src/utils.rs:154:                // Cache miss, need upload
+./src/utils.rs:155:                debug!("❌ Base64 cache miss | Hash: {}...", &hash[..8]);
+./src/utils.rs:162:        // Upload uncached data URLs
+./src/utils.rs:166:            // Convert data URL to temporary file
+./src/utils.rs:168:                // Extract MIME type from data URL
+./src/utils.rs:169:                let mime_type = if data_url.starts_with("data:") {
+./src/utils.rs:170:                    let parts: Vec<&str> = data_url.split(";base64,").collect();
+./src/utils.rs:172:                        let mime_part = parts[0].trim_start_matches("data:");
+./src/utils.rs:173:                        debug!("🔍 Extracted MIME type: {}", mime_part);
+./src/utils.rs:184:                        debug!("📄 Temporary file created successfully: {}", file_path.display());
+./src/utils.rs:192:                        error!("❌ Failed to process data URL: {}", e);
+./src/utils.rs:193:                        // Clean up created temporary file
+./src/utils.rs:196:                                warn!("⚠️ Failed to delete temporary file {}: {}", path.display(), e);
+./src/utils.rs:201:                            format!("Failed to process data URL: {}", e),
+./src/utils.rs:207:            // Upload temporary file
+./src/utils.rs:211:                        debug!("✅ Successfully uploaded {} temporary files", responses.len());
+./src/utils.rs:213:                        // Update cache and save URL mapping
+./src/utils.rs:219:                            // Estimate size
+./src/utils.rs:222:                            // Add to cache
+./src/utils.rs:226:                                "🔄 Mapping base64 hash to Poe URL | Hash: {}... -> {}",
+./src/utils.rs:235:                                    debug!("🔄 Replacing data URL | Poe: {}", response.attachment_url);
+./src/utils.rs:242:                        error!("❌ Failed to upload temporary file: {}", e);
+./src/utils.rs:243:                        // Clean up temporary file
+./src/utils.rs:246:                                warn!("⚠️ Failed to delete temporary file {}: {}", path.display(), e);
+./src/utils.rs:251:                            format!("Failed to upload temporary file: {}", e),
+./src/utils.rs:257:            // Clean up temporary files
+./src/utils.rs:260:                    warn!("⚠️ Failed to delete temporary file {}: {}", path.display(), e);
+./src/utils.rs:262:                    debug!("🗑️ Temporary file deleted: {}", path.display());
+./src/utils.rs:268:    // Process Poe CDN links in AI response, add to user message image_url
+./src/utils.rs:270:        // Find last AI response and user message
+./src/utils.rs:274:            .filter(|(_, msg)| msg.role == "assistant")
+./src/utils.rs:280:            .filter(|(_, msg)| msg.role == "user")
+./src/utils.rs:285:            // Extract Poe CDN links from AI response
+./src/utils.rs:289:                    "🔄 Extracted {} Poe CDN links from AI response, adding to user message",
+./src/utils.rs:292:                // Add these links to user message image_url
+./src/utils.rs:296:                        // Convert text message to multipart message with image
+./src/utils.rs:307:                        // Already multipart message, directly add image
+./src/utils.rs:322:// Get plain text content from OpenAIContent
+./src/utils.rs:330:                    // Use serde_json::to_string to handle special characters
+./src/utils.rs:333:                            // Remove quotes added by serde_json::to_string
+./src/utils.rs:334:                            let processed_text = processed_text.trim_matches('"').to_string();
+./src/utils.rs:335:                            // Replace JSON-escaped quotes (\") with normal quotes (")
+./src/utils.rs:336:                            let processed_text = processed_text.replace("\\\"", "\"");
+./src/utils.rs:340:                            // If serialization failed, use original text
+./src/utils.rs:346:            text_parts.join("\n")
+./src/utils.rs:351:// Check if URL is Poe CDN link
+./src/utils.rs:353:    url.starts_with("https://pfst.cf2.poecdn.net")
+./src/utils.rs:356:// Extract Poe CDN links from message
+./src/utils.rs:367:                    // Extract Poe CDN URL from text
+./src/utils.rs:373:            // Extract Poe CDN URL from plain text message
+./src/utils.rs:380:// Helper function to extract Poe CDN URLs from Markdown text
+./src/utils.rs:382:    // Extract Markdown image URLs: ![alt](url)
+./src/utils.rs:383:    let re_md_img = regex::Regex::new(r"!\[.*?\]\((https?://[^\s)]+)\)").unwrap();
+./src/utils.rs:392:    // Process URLs appearing directly
+./src/utils.rs:400:// Process base64 data URLs, convert to temporary file
+./src/utils.rs:402:    // 1. Validate data URL format
+./src/utils.rs:403:    if !data_url.starts_with("data:") {
+./src/utils.rs:404:        return Err("Invalid data URL format".to_string());
+./src/utils.rs:406:    // 2. Split MIME type and base64 data
+./src/utils.rs:407:    let parts: Vec<&str> = data_url.split(";base64,").collect();
+./src/utils.rs:409:        return Err("Invalid data URL format: missing base64 separator".to_string());
+./src/utils.rs:411:    // 3. Extract MIME type
+./src/utils.rs:412:    let mime_type = parts[0].strip_prefix("data:").unwrap_or(parts[0]);
+./src/utils.rs:413:    debug!("🔍 Extracted MIME type: {}", mime_type);
+./src/utils.rs:414:    // 4. Determine file extension from MIME type
+./src/utils.rs:415:    let file_ext = mime_type_to_extension(mime_type).unwrap_or("bin");
+./src/utils.rs:416:    debug!("📄 Using file extension: {}", file_ext);
+./src/utils.rs:417:    // 5. Decode base64 data (using BASE64_STANDARD only)
+./src/utils.rs:419:    debug!("🔢 Base64 data length: {}", base64_data.len());
+./src/utils.rs:422:            debug!("✅ Base64 decoding successful | Data size: {} bytes", data.len());
+./src/utils.rs:426:            error!("❌ Base64 decoding failed: {}", e);
+./src/utils.rs:427:            return Err(format!("Base64 decoding failed: {}", e));
+./src/utils.rs:430:    // 6. Create temporary file
+./src/utils.rs:432:    let file_name = format!("poe2openai_{}.{}", nanoid!(16), file_ext);
+./src/utils.rs:434:    // 7. Write data to temporary file
+./src/utils.rs:437:            debug!("✅ Successfully wrote to temporary file: {}", file_path.display());
+./src/utils.rs:441:            error!("❌ Failed to write to temporary file: {}", e);
+./src/utils.rs:442:            Err(format!("Failed to write to temporary file: {}", e))
+./src/utils.rs:447:// Get file extension from MIME type
+./src/utils.rs:450:        "image/jpeg" | "image/jpg" => Some("jpeg"),
+./src/utils.rs:451:        "image/png" => Some("png"),
+./src/utils.rs:452:        "image/gif" => Some("gif"),
+./src/utils.rs:453:        "image/webp" => Some("webp"),
+./src/utils.rs:454:        "image/svg+xml" => Some("svg"),
+./src/utils.rs:455:        "image/bmp" => Some("bmp"),
+./src/utils.rs:456:        "image/tiff" => Some("tiff"),
+./src/utils.rs:457:        "application/pdf" => Some("pdf"),
+./src/utils.rs:458:        "text/plain" => Some("txt"),
+./src/utils.rs:459:        "text/csv" => Some("csv"),
+./src/utils.rs:460:        "application/json" => Some("json"),
+./src/utils.rs:461:        "application/xml" | "text/xml" => Some("xml"),
+./src/utils.rs:462:        "application/zip" => Some("zip"),
+./src/utils.rs:463:        "application/x-tar" => Some("tar"),
+./src/utils.rs:464:        "application/x-gzip" => Some("gz"),
+./src/utils.rs:465:        "audio/mpeg" => Some("mp3"),
+./src/utils.rs:466:        "audio/wav" => Some("wav"),
+./src/utils.rs:467:        "audio/ogg" => Some("ogg"),
+./src/utils.rs:468:        "video/mp4" => Some("mp4"),
+./src/utils.rs:469:        "video/mpeg" => Some("mpeg"),
+./src/utils.rs:470:        "video/quicktime" => Some("mov"),
+./src/utils.rs:480:        "🔄 Conversion error response | Error text: {}, Retry allowed: {}",
+./src/utils.rs:483:    let (status, error_type, code) = if error_text.contains("Internal server error") {
+./src/utils.rs:486:            "internal_error",
+./src/utils.rs:487:            "internal_error",
+./src/utils.rs:489:    } else if error_text.contains("rate limit") {
+./src/utils.rs:492:            "rate_limit_exceeded",
+./src/utils.rs:493:            "rate_limit_exceeded",
+./src/utils.rs:495:    } else if error_text.contains("Invalid token") || error_text.contains("Unauthorized") {
+./src/utils.rs:496:        (StatusCode::UNAUTHORIZED, "invalid_auth", "invalid_api_key")
+./src/utils.rs:497:    } else if error_text.contains("Bot does not exist") {
+./src/utils.rs:498:        (StatusCode::NOT_FOUND, "model_not_found", "model_not_found")
+./src/utils.rs:500:        (StatusCode::BAD_REQUEST, "invalid_request", "bad_request")
+./src/utils.rs:503:        "📋 Error conversion result | Status code: {} | Error type: {}",
+./src/utils.rs:522:        format!("{} B", bytes)
+./src/utils.rs:524:        format!("{:.2} KB", bytes as f64 / 1024.0)
+./src/utils.rs:526:        format!("{:.2} MB", bytes as f64 / (1024.0 * 1024.0))
+./src/utils.rs:532:        format!("{:.2}s", duration.as_secs_f64())
+./src/utils.rs:534:        format!("{}ms", duration.as_millis())
+./src/utils.rs:539:    let config_dir = std::env::var("CONFIG_DIR").unwrap_or_else(|_| "./".to_string());
+./src/utils.rs:546:    let path_str = "models.yaml";
+./src/utils.rs:552:                    info!("✅ Successfully read and parsed {}", path_str);
+./src/utils.rs:556:                    error!("❌ Failed to parse {}: {}", path_str, e);
+./src/utils.rs:557:                    Err(format!("Failed to parse {}: {}", path_str, e))
+./src/utils.rs:561:                error!("❌ Failed to read {}: {}", path_str, e);
+./src/utils.rs:562:                Err(format!("Failed to read {}: {}", path_str, e))
+./src/utils.rs:566:        debug!("⚠️  {} does not exist, using default empty config", path_str);
+./src/utils.rs:567:        // Return a default Config indicating file doesn't exist or can't be read
+./src/utils.rs:576:/// Calculate token count for text
+./src/utils.rs:581:            error!("❌ Failed to initialize BPE encoder: {}", e);
+./src/utils.rs:589:/// Calculate token count for message list
+./src/utils.rs:593:        // Base token count per message (role tokens etc.)
+./src/utils.rs:594:        total_tokens += 4; // Base overhead per message
+./src/utils.rs:595:        // Calculate content token count
+./src/utils.rs:599:    // Add message format overhead tokens
+./src/utils.rs:600:    total_tokens += 2; // Start and end tokens for message format
+./src/utils.rs:604:/// Calculate token count for completion content
+./src/utils.rs:609:/// Calculate SHA256 hash of base64 string
+./src/utils.rs:611:    // Extract pure base64 part, remove MIME type prefix
+./src/utils.rs:612:    let base64_data = match base64_str.split(";base64,").nth(1) {
+./src/utils.rs:614:        None => base64_str, // If no separator, use whole string
+./src/utils.rs:619:        // Ensure sufficient length
+./src/utils.rs:622:        &base64_data[1024..] // If length between 1024-2048, use remaining part
+./src/utils.rs:624:        "" // If less than 1024, use start only
+./src/utils.rs:627:    // Combine head and tail data
+./src/utils.rs:628:    let combined = format!("{}{}", start, end);
+./src/utils.rs:630:    // Calculate SHA256 hash
+./src/utils.rs:635:    // Record hash calculation info for debugging
+./src/utils.rs:636:    let hash = format!("{:x}", result);
+./src/utils.rs:638:        "🔢 Calculating base64 hash | Data length: {} | Calculated length: {} | Hash prefix: {}...",
