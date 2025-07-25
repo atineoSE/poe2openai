@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Models 管理介面</title>
+    <title>Models Management Interface</title>
     <link href="./static/fontawesome.css" rel="stylesheet">
     <script src="./static/tailwind.js"></script>
     <script>
@@ -76,23 +76,23 @@
 				<div class="flex flex-wrap gap-3 mt-4">
 					<button onclick="loadModels()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
 						<i class="fas fa-file-upload mr-2"></i>
-						讀取
+						Load
 					</button>
 					<button onclick="saveModels()" class="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-light text-white dark:bg-primary-dark dark:hover:opacity-90 rounded-lg text-sm font-medium transition-colors duration-200">
 						<i class="fas fa-save mr-2"></i>
-						保存
+						Save
 					</button>
 					<button onclick="fetchModels()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
 						<i class="fas fa-cloud-download-alt mr-2"></i>
-						爬取Models列表
+						Fetch Models List
 					</button>
 					<button onclick="showAddCustomModel()" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
 						<i class="fas fa-plus mr-2"></i>
-						添加自訂模型
+						Add Custom Model
 					</button>
 					<button onclick="showGuide()" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
 						<i class="fas fa-question-circle mr-2"></i>
-						功能說明
+						Feature Guide
 					</button>
 				</div>
 			</div>
@@ -155,11 +155,11 @@
 				</div>
 				<div id="noResultsMessage" class="hidden text-center py-10 text-gray-500 dark:text-gray-400">
 					<i class="fas fa-search text-3xl mb-3"></i>
-					<p>沒有找到匹配的模型</p>
+					<p>No matching models found</p>
 				</div>
 				<div id="errorMessage" class="hidden text-center py-10 text-red-500">
 					<i class="fas fa-exclamation-triangle text-3xl mb-3"></i>
-					<p>獲取Models列表失敗</p>
+					<p>Failed to fetch models list</p>
 					<button onclick="fetchModels()" class="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200 text-gray-900 dark:text-white">
 						<i class="fas fa-redo mr-2"></i>Retry
 					</button>
@@ -183,10 +183,10 @@
 				<input type="text" id="modelNameInput" placeholder="Enter new mapping name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200 mb-5">
 				<div class="flex justify-end gap-3">
 					<button onclick="cancelEdit()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
-						取消
+						Cancel
 					</button>
 					<button onclick="saveEdit()" class="px-4 py-2 bg-primary hover:bg-primary-light text-white dark:bg-primary-dark dark:hover:opacity-90 rounded-lg text-sm font-medium transition-colors duration-200">
-						保存
+						Save
 					</button>
 				</div>
 			</div>
@@ -212,10 +212,10 @@
 				</div>
 				<div class="flex justify-end gap-3 mt-6">
 					<button onclick="closeModals()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
-						取消
+						Cancel
 					</button>
 					<button onclick="addCustomModel()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
-						添加
+						Add
 					</button>
 				</div>
 			</div>
@@ -233,12 +233,12 @@
 					<!-- Custom models list will be populated here -->
 					<div class="text-center py-8 text-gray-500 dark:text-gray-400" id="noCustomModelsMessage">
 						<i class="fas fa-info-circle text-2xl mb-2"></i>
-						<p>尚未添加自訂模型</p>
+						<p>No custom models have been added yet</p>
 					</div>
 				</div>
 				<div class="flex justify-end gap-3 mt-6">
 					<button onclick="closeModals()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
-						關閉
+						Close
 					</button>
 				</div>
 			</div>
@@ -258,15 +258,15 @@
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
 								<span class="font-semibold mr-2">No Marker (-):</span>
-								<span>保持原始模型設定，不做任何修改</span>
+								<span>Maintain original model settings without any modifications</span>
 							</li>
 							<li class="flex items-start">
 								<span class="font-semibold mr-2">Yellow (R):</span>
-								<span>主要為在Poe平台的文生圖/文生視頻相關模型作出的兼容性處理</span>
+								<span>Compatibility handling for image/video generation models on Poe platform</span>
 							</li>
 							<li class="flex items-start">
 								<span class="font-semibold mr-2">Crossed (X):</span>
-								<span>停用該模型，在模型列表中將不會顯示此模型</span>
+								<span>Disable this model, it will not be shown in the model list</span>
 							</li>
 						</ul>
 					</div>
@@ -274,13 +274,13 @@
 						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Model Mapping Function</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
-								<span>可為模型設定一個新的顯示名稱，原始名稱會顯示在左側並加上刪除線</span>
+								<span>Set a new display name for the model. Original name will appear with strikethrough on the left</span>
 							</li>
 							<li class="flex items-start">
-								<span>適用於需要將模型名稱對應到其他API格式的情況</span>
+								<span>Useful for mapping model names to other API formats</span>
 							</li>
 							<li class="flex items-start">
-								<span>映射後的名稱將會在所有API端點中使用</span>
+								<span>Mapped name will be used in all API endpoints</span>
 							</li>
 						</ul>
 					</div>
@@ -288,7 +288,7 @@
 						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Global Enable Switch Scope</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
-								<span>啟用後會影響以下API端點的行為：</span>
+								<span>Enabling affects behavior of these API endpoints:</span>
 							</li>
 							<li class="flex items-start">
 								<span class="font-semibold mr-2">Model List Filtering & Model Mapping</span>
@@ -314,16 +314,16 @@
 						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Custom Model Function</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
-								<span>可在模型列表中添加自訂模型</span>
+								<span>Add custom models to the model list</span>
 							</li>
 							<li class="flex items-start">
-								<span>直接填寫Bot名稱即可添加</span>
+								<span>Just enter the Bot name to add</span>
 							</li>
 							<li class="flex items-start">
-								<span>可選填模型提供商資訊</span>
+								<span>Optional provider information</span>
 							</li>
 							<li class="flex items-start">
-								<span>自訂模型以綠色邊框標記</span>
+								<span>Custom models are marked with green border</span>
 							</li>
 						</ul>
 					</div>
@@ -331,16 +331,16 @@
 						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Search and Filtering</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
-								<span>使用搜索框快速尋找特定模型</span>
+								<span>Use search box to quickly find specific models</span>
 							</li>
 							<li class="flex items-start">
-								<span>可按模型類型進行過濾：全部、自訂、已映射、替換回應或已停用</span>
+								<span>Filter by model type: All, Custom, Mapped, Replacement Response, or Disabled</span>
 							</li>
 							<li class="flex items-start">
-								<span>可透過切換隱藏停用模型，提高界面簡潔度</span>
+								<span>Hide disabled models to improve interface clarity</span>
 							</li>
 							<li class="flex items-start">
-								<span>界面設置會自動保存在本地</span>
+								<span>Interface settings are automatically saved locally</span>
 							</li>
 						</ul>
 					</div>
@@ -882,19 +882,19 @@
                 configData.custom_models = [];
                 return;
               }
-              // 確認是否要刪除
-              if (!confirm(`確定要刪除自訂模型 "${modelId}" 嗎？`)) {
+              // Confirm deletion
+              if (!confirm(`Are you sure you want to delete the custom model "${modelId}"?`)) {
                 return;
               }
-              // 從配置中移除模型
+              // Remove from configuration
               configData.custom_models = configData.custom_models.filter(
                 (m) => m.id.toLowerCase() !== modelId.toLowerCase()
               );
-              // 從當前顯示的模型列表中移除
+              // Remove from current model list
               models = models.filter((m) => m.name.toLowerCase() !== modelId.toLowerCase());
               filterModels();
               closeModals();
-              showToast(`已刪除自訂模型: ${modelId}`);
+              showToast(`Custom model deleted: ${modelId}`);
               saveConfig();
             }
             // Add custom model
@@ -903,32 +903,32 @@
               const owner =
                 document.getElementById("customModelOwner").value.trim() || "custom";
               if (!id) {
-                showToast("請輸入模型ID/Bot名稱");
+                showToast("Please enter model ID/Bot name");
                 return;
               }
-              // 檢查ID是否已存在
+              // Check if ID already exists
               if (models.some((m) => m.name.toLowerCase() === id.toLowerCase())) {
-                showToast("該模型ID已存在");
+                showToast("This model ID already exists");
                 return;
               }
-              // 確保 custom_models 存在
+              // Ensure custom_models exists
               if (!configData.custom_models) {
                 configData.custom_models = [];
               }
-              // 添加到配置 (無需 base_model)
+              // Add to configuration (no base_model needed)
               configData.custom_models.push({
                 id: id,
                 owned_by: owner,
-                created: Math.floor(Date.now() / 1000), // 當前時間戳
+                created: Math.floor(Date.now() / 1000), // Current timestamp
               });
-              // 添加到當前顯示的模型列表
+              // Add to current model list
               models.push({
                 name: id,
                 state: "-",
               });
               filterModels();
               closeModals();
-              showToast(`已添加自訂模型: ${id}`);
+              showToast(`Custom model added: ${id}`);
               saveConfig();
             }
             // Cancel edit
@@ -957,7 +957,7 @@
                 }
                 filterModels();
                 closeModals();
-                showToast("修改成功");
+                showToast("Changes saved successfully");
               }
             }
             // Show toast notification
@@ -976,9 +976,9 @@
               configData.enable = enabled;
               try {
                 await saveConfig();
-                showToast(`${enabled ? "已啟用" : "已停用"}Model自定義功能`);
+                showToast(`${enabled ? "Enabled" : "Disabled"} model customization`);
               } catch (error) {
-                showToast("更新配置失敗");
+                showToast("Failed to update configuration");
                 e.target.checked = !enabled;
                 configData.enable = !enabled;
               }
@@ -994,10 +994,10 @@
                   credentials: "same-origin",
                   body: JSON.stringify(configData),
                 });
-                if (!response.ok) throw new Error("保存失敗");
-                showToast("配置已保存");
+                if (!response.ok) throw new Error("Save failed");
+                showToast("Configuration saved");
               } catch (error) {
-                showToast("保存配置失敗");
+                showToast("Failed to save configuration");
                 throw error;
               }
             }
@@ -1008,16 +1008,16 @@
                 const response = await fetch("/api/admin/config");
                 const data = await response.json();
                 configData = data;
-                // 確保 custom_models 存在
+                // Ensure custom_models exists
                 if (!configData.custom_models) {
                   configData.custom_models = [];
                 }
                 updateModelStates();
                 filterModels();
-                showToast("已重新載入配置檔案");
+                showToast("Configuration reloaded");
               } catch (error) {
-                showToast("載入配置失敗");
-                console.error("載入配置錯誤:", error);
+                showToast("Failed to load configuration");
+                console.error("Load configuration error:", error);
                 document.getElementById("errorMessage").classList.remove("hidden");
                 document.getElementById("loadingIndicator").classList.add("hidden");
               }
@@ -1027,7 +1027,7 @@
               try {
                 await saveConfig();
               } catch (error) {
-                showToast("保存失敗");
+                showToast("Save failed");
               }
             }
             // Fetch model list
@@ -1045,10 +1045,10 @@
                     ? "X"
                     : "-",
                 }));
-                // 添加自訂模型
+                // Add custom models
                 if (configData.custom_models && configData.custom_models.length > 0) {
                   configData.custom_models.forEach((customModel) => {
-                    // 檢查是否已存在於模型列表
+                    // Check if already exists in model list
                     if (
                       !models.some(
                         (m) => m.name.toLowerCase() === customModel.id.toLowerCase()
@@ -1067,12 +1067,12 @@
                 }
                 currentPage = 1;
                 filterModels();
-                showToast("已更新Models列表");
+                showToast("Models list updated");
               } catch (error) {
-                console.error("獲取Models列表失敗:", error);
+                console.error("Failed to fetch models list:", error);
                 document.getElementById("errorMessage").classList.remove("hidden");
                 document.getElementById("loadingIndicator").classList.add("hidden");
-                showToast("獲取Models列表失敗");
+                showToast("Failed to fetch models list");
               }
             }
 		</script>
