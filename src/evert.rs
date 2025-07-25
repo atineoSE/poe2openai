@@ -5,7 +5,7 @@ use salvo::prelude::*;
 use std::collections::HashMap;
 use tracing::{debug, error};
 
-// 事件積累上下文，用於收集處理事件期間的狀態
+// Event accumulation context for collecting state during event processing
 #[derive(Debug, Clone, Default)]
 pub struct EventContext {
     pub content: String,
@@ -22,53 +22,53 @@ pub struct EventContext {
     pub image_urls_sent: bool,
 }
 
-// 事件處理器 trait
+// Event handler trait
 trait EventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String>;
 }
 
-// Text 事件處理器
+// Text event handler
 #[derive(Clone)]
 struct TextEventHandler;
 impl EventHandler for TextEventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
         if let Some(ChatResponseData::Text { text }) = &event.data {
             debug!(
-                "📝 處理文本事件 | 長度: {} | is_replace_mode: {} | first_text_processed: {}",
+                "📝 Processing text event | Length: {} | is_replace_mode: {} | first_text_processed: {}",
                 format_bytes_length(text.len()),
                 ctx.is_replace_mode,
                 ctx.first_text_processed
             );
 
-            // 如果是替換模式且第一個文本未處理，需要合併替換緩衝區與新文本
+            // If in replace mode and first text not processed, need to merge replace buffer with new text
             if ctx.is_replace_mode && !ctx.first_text_processed {
-                debug!("📝 合併第一個 Text 事件與 ReplaceResponse");
+                debug!("📝 Merging first Text event with ReplaceResponse");
                 if let Some(replace_content) = &mut ctx.replace_buffer {
                     replace_content.push_str(text);
                     ctx.first_text_processed = true;
-                    // 返回合併後的內容以發送合併片段
+                    // Return merged content to send fragment
                     return Some(replace_content.clone());
                 } else {
-                    // 沒有 replace_buffer，直接添加到 content
+                    // No replace_buffer, directly add to content
                     ctx.content.push_str(text);
                     return Some(text.clone());
                 }
             }
-            // 如果是替換模式且第一個文本已處理，則重置為非替換模式
+            // If in replace mode and first text processed, reset to normal mode
             else if ctx.is_replace_mode && ctx.first_text_processed {
-                debug!("🔄 重置替換模式，轉為直接文本模式");
+                debug!("🔄 Resetting replace mode to normal text mode");
                 ctx.is_replace_mode = false;
                 ctx.first_text_processed = false;
 
-                // 將 replace_buffer 的內容移至 content
+                // Move replace_buffer content to content
                 if let Some(replace_content) = ctx.replace_buffer.take() {
                     ctx.content = replace_content;
                 }
-                // 直接將新文本添加到 content
+                // Directly add new text to content
                 ctx.content.push_str(text);
                 return Some(text.clone());
             } else {
-                // 非 replace 模式，直接累積並返回文本
+                // Non-replace mode, directly accumulate and return text
                 ctx.content.push_str(text);
                 return Some(text.clone());
             }
@@ -77,35 +77,35 @@ impl EventHandler for TextEventHandler {
     }
 }
 
-// File 事件處理器
+// File event handler
 #[derive(Clone)]
 struct FileEventHandler;
 impl EventHandler for FileEventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
         if let Some(ChatResponseData::File(file_data)) = &event.data {
             debug!(
-                "🖼️  處理檔案事件 | 名稱: {} | URL: {}",
+                "🖼️  Processing file event | Name: {} | URL: {}",
                 file_data.name, file_data.url
             );
             ctx.file_refs
                 .insert(file_data.inline_ref.clone(), file_data.clone());
             ctx.has_new_file_refs = true;
 
-            // 如果此時有 replace_buffer，處理它並發送
+            // If replace_buffer exists, process and send it
             if !ctx.image_urls_sent && ctx.replace_buffer.is_some() {
-                // 只處理未發送過的
+                // Only process if not sent yet
                 let content = ctx.replace_buffer.as_ref().unwrap();
                 if content.contains(&format!("[{}]", file_data.inline_ref)) {
                     debug!(
-                        "🖼️ 檢測到 ReplaceResponse 包含圖片引用 [{}]，立即處理",
+                        "🖼️ Detected ReplaceResponse with image reference [{}], processing immediately",
                         file_data.inline_ref
                     );
-                    // 處理這個文本中的圖片引用
+                    // Process image reference in text
                     let mut processed = content.clone();
                     let img_marker = format!("[{}]", file_data.inline_ref);
                     let replacement = format!("({})", file_data.url);
                     processed = processed.replace(&img_marker, &replacement);
-                    ctx.image_urls_sent = true; // 標記已發送
+                    ctx.image_urls_sent = true; // Mark as sent
                     return Some(processed);
                 }
             }
@@ -114,24 +114,24 @@ impl EventHandler for FileEventHandler {
     }
 }
 
-// ReplaceResponse 事件處理器
+// ReplaceResponse event handler
 #[derive(Clone)]
 struct ReplaceResponseEventHandler;
 impl EventHandler for ReplaceResponseEventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
         if let Some(ChatResponseData::Text { text }) = &event.data {
             debug!(
-                "🔄 處理 ReplaceResponse 事件 | 長度: {}",
+                "🔄 Processing ReplaceResponse event | Length: {}",
                 format_bytes_length(text.len())
             );
             ctx.is_replace_mode = true;
             ctx.replace_buffer = Some(text.clone());
             ctx.first_text_processed = false;
 
-            // 檢查是否有文件引用需要處理
+            // Check if file reference needs processing
             if !ctx.file_refs.is_empty() && text.contains('[') {
-                debug!("🔄 ReplaceResponse 可能包含圖片引用，檢查並處理");
-                // 處理這個文本中的圖片引用
+                debug!("🔄 ReplaceResponse may contain image reference, checking and processing");
+                // Process image reference in text
                 let mut processed = text.clone();
                 let mut has_refs = false;
 
@@ -141,48 +141,48 @@ impl EventHandler for ReplaceResponseEventHandler {
                         let replacement = format!("({})", file_data.url);
                         processed = processed.replace(&img_marker, &replacement);
                         has_refs = true;
-                        debug!("🖼️  替換圖片引用 | ID: {} | URL: {}", ref_id, file_data.url);
+                        debug!("🖼️  Replacing image reference | ID: {} | URL: {}", ref_id, file_data.url);
                     }
                 }
 
                 if has_refs {
-                    // 如果確實包含了圖片引用，立即返回處理後的內容
-                    debug!("✅ ReplaceResponse 含有圖片引用，立即發送處理後內容");
-                    ctx.image_urls_sent = true; // 標記已發送
+                    // If indeed contains image reference, send processed content immediately
+                    debug!("✅ ReplaceResponse contains image reference, sending processed content immediately");
+                    ctx.image_urls_sent = true; // Mark as sent
                     return Some(processed);
                 }
             }
 
-            // 推遲 ReplaceResponse 的輸出，等待後續 Text 事件
-            debug!("🔄 推遲 ReplaceResponse 的輸出，等待後續 Text 事件");
+            // Defer ReplaceResponse output, wait for subsequent Text events
+            debug!("🔄 Deferring ReplaceResponse output, waiting for Text events");
         }
-        None // 不直接發送，等待與 Text 合併
+        None // Don't send directly, wait to merge with Text
     }
 }
 
-// Json 事件處理器 (用於 Tool Calls)
+// Json event handler (for Tool Calls)
 #[derive(Clone)]
 struct JsonEventHandler;
 impl EventHandler for JsonEventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
-        debug!("📝 處理 JSON 事件");
+        debug!("📝 Processing JSON event");
         if let Some(ChatResponseData::ToolCalls(tool_calls)) = &event.data {
-            debug!("🔧 處理工具調用，數量: {}", tool_calls.len());
+            debug!("🔧 Processing tool calls, count: {}", tool_calls.len());
             ctx.tool_calls.extend(tool_calls.clone());
-            // 返回 Some，表示需要發送工具調用
+            // Return Some to indicate tool calls need to be sent
             return Some("tool_calls".to_string());
         }
         None
     }
 }
 
-// Error 事件處理器
+// Error event handler
 #[derive(Clone)]
 struct ErrorEventHandler;
 impl EventHandler for ErrorEventHandler {
     fn handle(&self, event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
         if let Some(ChatResponseData::Error { text, allow_retry }) = &event.data {
-            error!("❌ 處理錯誤事件: {}", text);
+            error!("❌ Processing error event: {}", text);
             let (status, error_response) = convert_poe_error_to_openai(text, *allow_retry);
             ctx.error = Some((status, error_response));
             return Some("error".to_string());
@@ -191,18 +191,18 @@ impl EventHandler for ErrorEventHandler {
     }
 }
 
-// Done 事件處理器
+// Done event handler
 #[derive(Clone)]
 struct DoneEventHandler;
 impl EventHandler for DoneEventHandler {
     fn handle(&self, _event: &ChatResponse, ctx: &mut EventContext) -> Option<String> {
-        debug!("✅ 處理 Done 事件");
+        debug!("✅ Processing Done event");
         ctx.done = true;
 
-        // 只有當未發送過圖片URL時才處理
+        // Only process if image URLs not sent yet
         if !ctx.image_urls_sent && ctx.replace_buffer.is_some() && !ctx.file_refs.is_empty() {
             let content = ctx.replace_buffer.as_ref().unwrap();
-            debug!("🔍 檢查完成事件時是否有未處理的圖片引用");
+                debug!("🔍 Checking for unprocessed image references on completion");
             let mut processed = content.clone();
             let mut has_refs = false;
 
@@ -213,15 +213,15 @@ impl EventHandler for DoneEventHandler {
                     processed = processed.replace(&img_marker, &replacement);
                     has_refs = true;
                     debug!(
-                        "🖼️ 完成前替換圖片引用 | ID: {} | URL: {}",
+                        "🖼️ Replacing image reference before completion | ID: {} | URL: {}",
                         ref_id, file_data.url
                     );
                 }
             }
 
             if has_refs {
-                debug!("✅ 完成前處理了圖片引用");
-                ctx.image_urls_sent = true; // 標記已發送
+                debug!("✅ Processed image references before completion");
+                ctx.image_urls_sent = true; // Mark as sent
                 return Some(processed);
             }
         }
@@ -230,7 +230,7 @@ impl EventHandler for DoneEventHandler {
     }
 }
 
-// 事件處理器管理器
+// Event handler manager
 #[derive(Clone)]
 pub struct EventHandlerManager {
     text_handler: TextEventHandler,

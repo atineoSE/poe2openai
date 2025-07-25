@@ -23,45 +23,45 @@ use tracing::{debug, error, info, warn};
 #[handler]
 pub async fn chat_completions(req: &mut Request, res: &mut Response) {
     let start_time = Instant::now();
-    info!("📝 收到新的聊天完成請求");
+    info!("📝 Received new chat completion request");
 
     let max_size: usize = std::env::var("MAX_REQUEST_SIZE")
         .unwrap_or_else(|_| "1073741824".to_string())
         .parse()
         .unwrap_or(1024 * 1024 * 1024);
 
-    // 從緩存獲取 models.yaml 配置
+    // Get models.yaml config from cache
     let config = get_cached_config().await;
-    debug!("🔧 從緩存獲取配置 | 啟用狀態: {:?}", config.enable);
+    debug!("🔧 Getting config from cache | Enabled status: {:?}", config.enable);
 
-    // 驗證授權
+    // Validate authorization
     let access_key = match req.headers().get("Authorization") {
         Some(auth) => {
             let auth_str = auth.to_str().unwrap_or("");
             if let Some(stripped) = auth_str.strip_prefix("Bearer ") {
-                debug!("🔑 驗證令牌長度: {}", stripped.len());
+                debug!("🔑 Validating token length: {}", stripped.len());
                 stripped.to_string()
             } else {
-                error!("❌ 無效的授權格式");
+                error!("❌ Invalid authorization format");
                 res.status_code(StatusCode::UNAUTHORIZED);
-                res.render(Json(json!({ "error": "無效的 Authorization" })));
+                res.render(Json(json!({ "error": "Invalid Authorization" })));
                 return;
             }
         }
         None => {
-            error!("❌ 缺少授權標頭");
+            error!("❌ Missing authorization header");
             res.status_code(StatusCode::UNAUTHORIZED);
-            res.render(Json(json!({ "error": "缺少 Authorization" })));
+            res.render(Json(json!({ "error": "Missing Authorization" })));
             return;
         }
     };
 
-    // 解析請求體
+    // Parse request body
     let chat_request = match req.payload_with_max_size(max_size).await {
         Ok(bytes) => match serde_json::from_slice::<ChatCompletionRequest>(bytes) {
             Ok(req) => {
                 debug!(
-                    "📊 請求解析成功 | 模型: {} | 訊息數量: {} | 是否串流: {:?}",
+                    "📊 Request parsed successfully | Model: {} | Message count: {} | Stream: {:?}",
                     req.model,
                     req.messages.len(),
                     req.stream
@@ -69,11 +69,11 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
                 req
             }
             Err(e) => {
-                error!("❌ JSON 解析失敗: {}", e);
+                error!("❌ JSON parse failed: {}", e);
                 res.status_code(StatusCode::BAD_REQUEST);
                 res.render(Json(OpenAIErrorResponse {
                     error: OpenAIError {
-                        message: format!("JSON 解析失敗: {}", e),
+                        message: format!("JSON parse failed: {}", e),
                         r#type: "invalid_request_error".to_string(),
                         code: "parse_error".to_string(),
                         param: None,
@@ -83,11 +83,11 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
             }
         },
         Err(e) => {
-            error!("❌ 請求大小超過限制或讀取失敗: {}", e);
+            error!("❌ Request size exceeds limit or read failed: {}", e);
             res.status_code(StatusCode::PAYLOAD_TOO_LARGE);
             res.render(Json(OpenAIErrorResponse {
                 error: OpenAIError {
-                    message: format!("請求大小超過限制 ({} bytes) 或讀取失敗: {}", max_size, e),
+                    message: format!("Request size exceeds limit ({} bytes) or read failed: {}", max_size, e),
                     r#type: "invalid_request_error".to_string(),
                     code: "payload_too_large".to_string(),
                     param: None,
@@ -97,10 +97,10 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
         }
     };
 
-    // 尋找映射的原始模型名稱
+    // Find mapped original model name
     let (display_model, original_model) = if config.enable.unwrap_or(false) {
         let requested_model = chat_request.model.clone();
-        // 檢查當前請求的模型是否是某個映射的目標
+        // Check if requested model is a target of any mapping
         let mapping_entry = config.models.iter().find(|(_, cfg)| {
             if let Some(mapping) = &cfg.mapping {
                 mapping.to_lowercase() == requested_model.to_lowercase()
@@ -109,41 +109,41 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
             }
         });
         if let Some((original_name, _)) = mapping_entry {
-            // 如果找到映射，使用原始模型名稱
-            debug!("🔄 反向模型映射: {} -> {}", requested_model, original_name);
+            // If found mapping, use original model name
+            debug!("🔄 Reverse model mapping: {} -> {}", requested_model, original_name);
             (requested_model, original_name.clone())
         } else {
-            // 如果沒找到映射，檢查是否有直接映射配置
+            // If no mapping found, check for direct mapping
             if let Some(model_config) = config.models.get(&requested_model) {
                 if let Some(mapped_name) = &model_config.mapping {
-                    debug!("🔄 直接模型映射: {} -> {}", requested_model, mapped_name);
+                    debug!("🔄 Direct model mapping: {} -> {}", requested_model, mapped_name);
                     (requested_model.clone(), requested_model)
                 } else {
-                    // 沒有映射配置，使用原始名稱
+                    // No mapping config, use original name
                     (requested_model.clone(), requested_model)
                 }
             } else {
-                // 完全沒有相關配置，使用原始名稱
+                // No config at all, use original name
                 (requested_model.clone(), requested_model)
             }
         }
     } else {
-        // 配置未啟用，直接使用原始名稱
+        // Config disabled, use original name directly
         (chat_request.model.clone(), chat_request.model.clone())
     };
-    info!("🤖 使用模型: {} (原始: {})", display_model, original_model);
+    info!("🤖 Using model: {} (original: {})", display_model, original_model);
 
-    // 創建客戶端
+    // Create client
     let client = PoeClientWrapper::new(&original_model, &access_key);
 
-    // 處理消息中的image_url
+    // Process image_url in messages
     let mut messages = chat_request.messages.clone();
     if let Err(e) = process_message_images(&client, &mut messages).await {
-        error!("❌ 處理文件上傳失敗: {}", e);
+        error!("❌ Failed to process file upload: {}", e);
         res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         res.render(Json(OpenAIErrorResponse {
             error: OpenAIError {
-                message: format!("處理文件上傳失敗: {}", e),
+                message: format!("Failed to process file upload: {}", e),
                 r#type: "processing_error".to_string(),
                 code: "file_processing_failed".to_string(),
                 param: None,
@@ -152,14 +152,14 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
         return;
     }
 
-    // 計算 prompt_tokens
+    // Calculate prompt_tokens
     let prompt_tokens = count_message_tokens(&messages);
-    debug!("📊 計算 prompt_tokens: {}", prompt_tokens);
+    debug!("📊 Calculating prompt_tokens: {}", prompt_tokens);
 
     let stream = chat_request.stream.unwrap_or(false);
-    debug!("🔄 請求模式: {}", if stream { "串流" } else { "非串流" });
+    debug!("🔄 Request mode: {}", if stream { "streaming" } else { "non-streaming" });
 
-    // 創建 chat 請求
+    // Create chat request
     let chat_request_obj = create_chat_request(
         &original_model,
         messages,
@@ -170,40 +170,40 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
     )
     .await;
 
-    // 檢查是否需要包含 usage 統計
+    // Check if need to include usage statistics
     let include_usage = chat_request
         .stream_options
         .as_ref()
         .and_then(|opts| opts.include_usage)
         .unwrap_or(false);
-    debug!("📊 是否包含 usage 統計: {}", include_usage);
+    debug!("📊 Include usage statistics: {}", include_usage);
 
-    // 創建輸出生成器
+    // Create output generator
     let output_generator =
         OutputGenerator::new(display_model.clone(), prompt_tokens, include_usage);
 
     match client.stream_request(chat_request_obj).await {
         Ok(event_stream) => {
             if stream {
-                // 處理串流響應
+                // Process streaming response
                 handle_stream_response(res, event_stream, output_generator).await;
             } else {
-                // 處理非串流響應
+                // Process non-streaming response
                 handle_non_stream_response(res, event_stream, output_generator).await;
             }
         }
         Err(e) => {
-            error!("❌ 建立串流請求失敗: {}", e);
+            error!("❌ Failed to create streaming request: {}", e);
             res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
             res.render(Json(json!({ "error": e.to_string() })));
         }
     }
 
     let duration = start_time.elapsed();
-    info!("✅ 請求處理完成 | 耗時: {}", format_duration(duration));
+    info!("✅ Request processing completed | Duration: {}", format_duration(duration));
 }
 
-// 處理串流響應
+// Process streaming response
 async fn handle_stream_response(
     res: &mut Response,
     event_stream: Pin<Box<dyn Stream<Item = Result<ChatResponse, PoeError>> + Send>>,
@@ -214,11 +214,11 @@ async fn handle_stream_response(
     let model = output_generator.model.clone();
     let include_usage = output_generator.include_usage;
     info!(
-        "🌊 開始處理串流響應 | ID: {} | 模型: {} | 包含使用統計: {}",
+        "🌊 Starting to process streaming response | ID: {} | Model: {} | Include usage: {}",
         id, model, include_usage
     );
 
-    // 設置串流響應的頭部
+    // Set streaming response headers
     res.headers_mut()
         .insert(header::CONTENT_TYPE, "text/event-stream".parse().unwrap());
     res.headers_mut()
@@ -226,7 +226,7 @@ async fn handle_stream_response(
     res.headers_mut()
         .insert(header::CONNECTION, "keep-alive".parse().unwrap());
 
-    // 處理事件流並生成輸出
+    // Process event stream and generate output
     let processed_stream = output_generator
         .process_stream(Box::pin(event_stream))
         .await;
@@ -234,13 +234,13 @@ async fn handle_stream_response(
 
     let duration = start_time.elapsed();
     info!(
-        "✅ 串流響應處理完成 | ID: {} | 耗時: {}",
+        "✅ Streaming response processing completed | ID: {} | Duration: {}",
         id,
         format_duration(duration)
     );
 }
 
-// 處理非串流響應
+// Process non-streaming response
 async fn handle_non_stream_response(
     res: &mut Response,
     mut event_stream: Pin<Box<dyn Stream<Item = Result<ChatResponse, PoeError>> + Send>>,
@@ -251,33 +251,33 @@ async fn handle_non_stream_response(
     let model = output_generator.model.clone();
     let include_usage = output_generator.include_usage;
     info!(
-        "📦 開始處理非串流響應 | ID: {} | 模型: {} | 包含使用統計: {}",
+        "📦 Starting to process non-streaming response | ID: {} | Model: {} | Include usage: {}",
         id, model, include_usage
     );
 
     let handler_manager = EventHandlerManager::new();
     let mut ctx = EventContext::default();
 
-    // 處理所有事件
+    // Process all events
     while let Some(result) = event_stream.next().await {
         match result {
             Ok(event) => {
                 handler_manager.handle(&event, &mut ctx);
-                // 檢查是否有錯誤
+                // Check for errors
                 if let Some((status, error_response)) = &ctx.error {
-                    error!("❌ 處理錯誤: {:?}", error_response);
+                    error!("❌ Processing error: {:?}", error_response);
                     res.status_code(*status);
                     res.render(Json(error_response));
                     return;
                 }
-                // 檢查是否完成
+                // Check if completed
                 if ctx.done {
-                    debug!("✅ 收到完成事件");
+                    debug!("✅ Received completion event");
                     break;
                 }
             }
             Err(e) => {
-                error!("❌ 處理錯誤: {}", e);
+                error!("❌ Processing error: {}", e);
                 let (status, error_response) = convert_poe_error_to_openai(&e.to_string(), false);
                 res.status_code(status);
                 res.render(Json(error_response));
@@ -286,19 +286,19 @@ async fn handle_non_stream_response(
         }
     }
 
-    // 創建最終響應
+    // Create final response
     let response = output_generator.create_final_response(&mut ctx);
     res.render(Json(response));
 
     let duration = start_time.elapsed();
     info!(
-        "✅ 非串流響應處理完成 | ID: {} | 耗時: {}",
+        "✅ Non-streaming response processing completed | ID: {} | Duration: {}",
         id,
         format_duration(duration)
     );
 }
 
-// 輸出生成器 - 用於將 EventContext 轉換為最終輸出
+// Output generator - Convert EventContext to final output
 #[derive(Clone)]
 struct OutputGenerator {
     id: String,
@@ -319,7 +319,7 @@ impl OutputGenerator {
         }
     }
 
-    // 處理文件引用，將 [ref_id] 替換為 (url)
+    // Process file references, replace [ref_id] with (url)
     fn process_file_references(
         &self,
         content: &str,
@@ -336,16 +336,16 @@ impl OutputGenerator {
             if processed.contains(&img_marker) {
                 let replacement = format!("({})", file_data.url);
                 processed = processed.replace(&img_marker, &replacement);
-                debug!("🖼️ 替換圖片引用 | ID: {} | URL: {}", ref_id, file_data.url);
+                debug!("🖼️ Replacing image reference | ID: {} | URL: {}", ref_id, file_data.url);
                 has_replaced = true;
             }
         }
 
         if has_replaced {
-            debug!("✅ 成功替換圖片引用");
+            debug!("✅ Successfully replaced image reference");
         } else if processed.contains('[') && processed.contains(']') {
             warn!(
-                "⚠️ 文本包含可能的圖片引用格式，但未找到對應引用: {}",
+                "⚠️ Text contains possible image reference format but no corresponding reference found: {}",
                 processed
             );
         }
@@ -353,7 +353,7 @@ impl OutputGenerator {
         processed
     }
 
-    // 計算 token 使用情況
+    // Calculate token usage
     fn calculate_tokens(&self, ctx: &mut EventContext) -> (u32, u32, u32) {
         let content = match &ctx.replace_buffer {
             Some(replace_content) => replace_content,
@@ -365,7 +365,7 @@ impl OutputGenerator {
         (self.prompt_tokens, completion_tokens, total_tokens)
     }
 
-    // 創建角色 chunk
+    // Create role chunk
     fn create_role_chunk(&self) -> ChatCompletionChunk {
         let role_delta = Delta {
             role: Some("assistant".to_string()),
@@ -386,7 +386,7 @@ impl OutputGenerator {
         }
     }
 
-    // 創建串流 chunk
+    // Create streaming chunk
     fn create_stream_chunk(
         &self,
         content: &str,
@@ -400,7 +400,7 @@ impl OutputGenerator {
         };
         delta.content = Some(content.to_string());
         debug!(
-            "🔧 創建串流片段 | ID: {} | 內容長度: {}",
+            "🔧 Creating streaming chunk | ID: {} | Content length: {}",
             self.id,
             format_bytes_length(content.len())
         );
@@ -417,7 +417,7 @@ impl OutputGenerator {
         }
     }
 
-    // 創建工具調用 chunk
+    // Create tool call chunk
     fn create_tool_calls_chunk(
         &self,
         tool_calls: &[poe_api_process::types::ChatToolCall],
@@ -441,35 +441,35 @@ impl OutputGenerator {
         }
     }
 
-    // 創建最終完整回應（非串流模式）
+    // Create final complete response (non-streaming mode)
     fn create_final_response(&self, ctx: &mut EventContext) -> ChatCompletionResponse {
-        // 處理內容，包括文件引用替換
+        // Process content including file reference replacement
         let content = if let Some(replace_content) = &ctx.replace_buffer {
             self.process_file_references(replace_content, &ctx.file_refs)
         } else {
             self.process_file_references(&ctx.content, &ctx.file_refs)
         };
-        // 計算 token
+        // Calculate tokens
         let (prompt_tokens, completion_tokens, total_tokens) = self.calculate_tokens(ctx);
-        // 確定 finish_reason
+        // Determine finish_reason
         let finish_reason = if !ctx.tool_calls.is_empty() {
             "tool_calls".to_string()
         } else {
             "stop".to_string()
         };
         debug!(
-            "📤 準備發送回應 | 內容長度: {} | 工具調用數量: {} | 完成原因: {}",
+            "📤 Preparing to send response | Content length: {} | Tool call count: {} | Finish reason: {}",
             format_bytes_length(content.len()),
             ctx.tool_calls.len(),
             finish_reason
         );
         if self.include_usage {
             debug!(
-                "📊 Token 使用統計 | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+                "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
                 prompt_tokens, completion_tokens, total_tokens
             );
         }
-        // 創建響應
+        // Create response
         let mut response = ChatCompletionResponse {
             id: format!("chatcmpl-{}", self.id),
             object: "chat.completion".to_string(),
@@ -503,7 +503,7 @@ impl OutputGenerator {
         response
     }
 
-    // 直接處理串流事件並產生輸出，無需預讀
+    // Directly process streaming events without pre-reading
     pub async fn process_stream<S>(
         self,
         event_stream: S,
@@ -514,31 +514,31 @@ impl OutputGenerator {
         let ctx = Arc::new(Mutex::new(EventContext::default()));
         let handler_manager = EventHandlerManager::new();
 
-        // 直接用 unfold 邏輯處理事件流
+        // Directly use unfold logic to process event stream
         let stream_processor = stream::unfold(
             (event_stream, false, ctx, handler_manager, self),
             move |(mut event_stream, mut is_done, ctx_arc, handler_manager, generator)| {
                 let ctx_arc_clone = Arc::clone(&ctx_arc);
                 async move {
                     if is_done {
-                        debug!("✅ 串流處理完成");
+                        debug!("✅ Streaming processing completed");
                         return None;
                     }
 
                     match event_stream.next().await {
                         Some(Ok(event)) => {
-                            // 鎖定上下文並處理事件
+                            // Lock context and process event
                             let mut output_content: Option<String> = None;
                             {
                                 let mut ctx_guard = ctx_arc_clone.lock().unwrap();
 
-                                // 處理事件並獲取要發送的內容
+                                // Process event and get content to send
                                 let chunk_content_opt =
                                     handler_manager.handle(&event, &mut ctx_guard);
 
-                                // 檢查錯誤
+                                // Check error
                                 if let Some((_, error_response)) = &ctx_guard.error {
-                                    debug!("❌ 檢測到錯誤，中斷串流");
+                                    debug!("❌ Error detected, terminating stream");
                                     let error_json = serde_json::to_string(error_response).unwrap();
                                     return Some((
                                         Ok(format!("data: {}\n\n", error_json)),
@@ -546,23 +546,23 @@ impl OutputGenerator {
                                     ));
                                 }
 
-                                // 檢查是否完成
+                                // Check completion
                                 if ctx_guard.done {
-                                    debug!("✅ 檢測到完成信號");
+                                    debug!("✅ Completion signal detected");
                                     is_done = true;
                                 }
 
-                                // 處理返回的內容
+                                // Process returned content
                                 match event.event {
                                     ChatEventType::Text => {
                                         if let Some(chunk_content) = chunk_content_opt {
-                                            debug!("📝 處理普通 Text 事件");
+                                            debug!("📝 Processing normal Text event");
                                             let processed = generator.process_file_references(
                                                 &chunk_content,
                                                 &ctx_guard.file_refs,
                                             );
 
-                                            // 判斷是否需要發送角色塊
+                                            // Determine if need to send role chunk
                                             if !ctx_guard.role_chunk_sent {
                                                 let role_chunk = generator.create_role_chunk();
                                                 let role_json =
@@ -588,11 +588,11 @@ impl OutputGenerator {
                                         }
                                     }
                                     ChatEventType::File => {
-                                        // 處理文件事件，如果返回了內容，表示有圖片引用需要立即處理
+                                        // Process file event, if returns content means image reference needs immediate processing
                                         if let Some(chunk_content) = chunk_content_opt {
-                                            debug!("🖼️ 處理檔案引用，產生包含URL的輸出");
+                                            debug!("🖼️ Processing file reference, generating output with URL");
 
-                                            // 判斷是否需要發送角色塊
+                                            // Determine if need to send role chunk
                                             if !ctx_guard.role_chunk_sent {
                                                 let role_chunk = generator.create_role_chunk();
                                                 let role_json =
@@ -618,11 +618,11 @@ impl OutputGenerator {
                                         }
                                     }
                                     ChatEventType::ReplaceResponse => {
-                                        // 如果 ReplaceResponse 直接返回了內容，說明其中包含了圖片引用
+                                        // If ReplaceResponse returns content, means contains image reference
                                         if let Some(chunk_content) = chunk_content_opt {
-                                            debug!("🔄 ReplaceResponse 包含圖片引用，直接發送");
+                                            debug!("🔄 ReplaceResponse contains image reference, sending directly");
 
-                                            // 判斷是否需要發送角色塊
+                                            // Determine if need to send role chunk
                                             if !ctx_guard.role_chunk_sent {
                                                 let role_chunk = generator.create_role_chunk();
                                                 let role_json =
@@ -649,7 +649,7 @@ impl OutputGenerator {
                                     }
                                     ChatEventType::Json => {
                                         if !ctx_guard.tool_calls.is_empty() {
-                                            debug!("🔧 處理工具調用");
+                                            debug!("🔧 Processing tool call");
                                             let tool_chunk = generator
                                                 .create_tool_calls_chunk(&ctx_guard.tool_calls);
                                             let json = serde_json::to_string(&tool_chunk).unwrap();
@@ -670,12 +670,12 @@ impl OutputGenerator {
                                         }
                                     }
                                     ChatEventType::Done => {
-                                        // 如果 Done 事件返回了內容，表示有未處理的圖片引用
+                                        // If Done event returns content, means unprocessed image reference exists
                                         if let Some(chunk_content) = chunk_content_opt {
                                             if chunk_content != "done" && !ctx_guard.image_urls_sent
                                             {
                                                 debug!(
-                                                    "✅ Done 事件包含未處理的圖片引用，發送最終內容"
+                                                    "✅ Done event contains unprocessed image reference, sending final content"
                                                 );
                                                 let chunk = generator.create_stream_chunk(
                                                     &chunk_content,
@@ -684,9 +684,9 @@ impl OutputGenerator {
                                                 let json = serde_json::to_string(&chunk).unwrap();
                                                 output_content =
                                                     Some(format!("data: {}\n\n", json));
-                                                ctx_guard.image_urls_sent = true; // 標記已發送
+                                                ctx_guard.image_urls_sent = true; // Mark as sent
                                             } else {
-                                                // 一般完成事件
+                                                // Normal completion event
                                                 let (
                                                     prompt_tokens,
                                                     completion_tokens,
@@ -704,7 +704,7 @@ impl OutputGenerator {
                                                 );
                                                 let final_json = if generator.include_usage {
                                                     debug!(
-                                                        "📊 Token 使用統計 | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+                                                        "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
                                                         prompt_tokens,
                                                         completion_tokens,
                                                         total_tokens
@@ -737,7 +737,7 @@ impl OutputGenerator {
                                                 }
                                             }
                                         } else {
-                                            // 無內容的完成事件
+                                            // No content completion event
                                             let (prompt_tokens, completion_tokens, total_tokens) =
                                                 generator.calculate_tokens(&mut ctx_guard);
                                             let finish_reason = if !ctx_guard.tool_calls.is_empty()
@@ -752,7 +752,7 @@ impl OutputGenerator {
                                             );
                                             let final_json = if generator.include_usage {
                                                 debug!(
-                                                    "📊 Token 使用統計 | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
+                                                    "📊 Token usage | prompt_tokens: {} | completion_tokens: {} | total_tokens: {}",
                                                     prompt_tokens, completion_tokens, total_tokens
                                                 );
                                                 let mut json_value =
@@ -784,7 +784,7 @@ impl OutputGenerator {
                                         }
                                     }
                                     _ => {
-                                        // 其他事件類型，如果有返回內容也處理
+                                        // Other event types, process if content exists
                                         if let Some(chunk_content) = chunk_content_opt {
                                             if !ctx_guard.role_chunk_sent {
                                                 let role_chunk = generator.create_role_chunk();
@@ -812,7 +812,7 @@ impl OutputGenerator {
                                     }
                                 }
 
-                                // 如果沒有輸出內容且需要發送角色塊，則發送
+                                // If no output content but need to send role chunk, send it
                                 if output_content.is_none()
                                     && !ctx_guard.role_chunk_sent
                                     && (event.event == ChatEventType::Text
@@ -826,11 +826,11 @@ impl OutputGenerator {
                                 }
                             }
 
-                            // 返回輸出內容
+                            // Return output content
                             if let Some(output) = output_content {
                                 if !output.trim().is_empty() {
                                     debug!(
-                                        "📤 發送串流片段 | 長度: {}",
+                                        "📤 Sending streaming chunk | Length: {}",
                                         format_bytes_length(output.len())
                                     );
                                     Some((
@@ -844,7 +844,7 @@ impl OutputGenerator {
                                         ),
                                     ))
                                 } else {
-                                    // 空輸出，繼續處理
+                                    // Empty output, continue processing
                                     Some((
                                         Ok(String::new()),
                                         (
@@ -857,7 +857,7 @@ impl OutputGenerator {
                                     ))
                                 }
                             } else {
-                                // 沒有輸出，但繼續處理
+                                // No output, continue processing
                                 Some((
                                     Ok(String::new()),
                                     (event_stream, is_done, ctx_arc, handler_manager, generator),
@@ -865,7 +865,7 @@ impl OutputGenerator {
                             }
                         }
                         Some(Err(e)) => {
-                            error!("❌ 串流處理錯誤: {}", e);
+                            error!("❌ Streaming processing error: {}", e);
                             let error_response = convert_poe_error_to_openai(&e.to_string(), false);
                             let error_json = serde_json::to_string(&error_response.1).unwrap();
                             Some((
@@ -874,7 +874,7 @@ impl OutputGenerator {
                             ))
                         }
                         None => {
-                            debug!("⏹️ 事件流結束");
+                            debug!("⏹️ Event stream ended");
                             None
                         }
                     }
@@ -882,10 +882,10 @@ impl OutputGenerator {
             },
         );
 
-        // 添加結束消息
+        // Add completion message
         let done_message = "data: [DONE]\n\n".to_string();
 
-        // 過濾掉空的訊息，並加上結束訊息
+        // Filter empty messages and add completion message
         Box::pin(
             stream_processor
                 .filter(|result| {

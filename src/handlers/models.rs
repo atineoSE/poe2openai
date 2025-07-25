@@ -9,19 +9,19 @@ use std::time::Instant;
 use tokio::sync::RwLock;
 use tracing::{debug, error, info};
 
-// 注意：此緩存不適用於 /api/models 路徑
+// Note: This cache doesn't apply to /api/models path
 static API_MODELS_CACHE: RwLock<Option<Arc<Vec<ModelInfo>>>> = RwLock::const_new(None);
 
 #[handler]
 pub async fn get_models(req: &mut Request, res: &mut Response) {
     let path = req.uri().path();
-    info!("📋 收到獲取模型列表請求 | 路徑: {}", path);
+    info!("📋 Received request to get model list | Path: {}", path);
     let start_time = Instant::now();
 
-    // 處理 /api/models 特殊路徑 (不使用緩存) ---
+    // Handle /api/models special path (no cache) ---
     if path == "/api/models" {
-        info!("⚡️ api/models 路徑：直接從 Poe 取得（無緩存）");
-        match get_model_list(Some("zh-Hant")).await {
+        info!("⚡️ api/models path: directly from Poe (no cache)");
+        match get_model_list(Some("en-us")).await {
             Ok(model_list) => {
                 let lowercase_models = model_list
                     .data
@@ -47,8 +47,8 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
 
                 let duration = start_time.elapsed();
                 info!(
-                    "✅ [/api/models] 成功獲取未過濾模型列表並更新緩存 | 模型數量: {} | 處理時間: {}",
-                    models_arc.len(), // 使用 Arc 的長度
+                    "✅ [/api/models] Successfully got unfiltered model list and updated cache | Model count: {} | Processing time: {}",
+                    models_arc.len(), // Use Arc length
                     crate::utils::format_duration(duration)
                 );
                 res.render(Json(response));
@@ -56,7 +56,7 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
             Err(e) => {
                 let duration = start_time.elapsed();
                 error!(
-                    "❌ [/api/models] 獲取模型列表失敗 | 錯誤: {} | 耗時: {}",
+                    "❌ [/api/models] Failed to get model list | Error: {} | Duration: {}",
                     e,
                     crate::utils::format_duration(duration)
                 );
@@ -70,7 +70,7 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
     let config = get_cached_config().await;
 
     let is_enabled = config.enable.unwrap_or(false);
-    debug!("🔍 設定檔啟用狀態 (來自緩存): {}", is_enabled);
+    debug!("🔍 Config enabled status (from cache): {}", is_enabled);
 
     let yaml_config_map: std::collections::HashMap<String, ModelConfig> = config
         .models
@@ -80,30 +80,30 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
         .collect();
 
     if is_enabled {
-        info!("⚙️ 合併緩存的 Poe API 列表與 models.yaml (啟用)");
+        info!("⚙️ Merging cached Poe API list with models.yaml (enabled)");
 
         let api_models_data_arc: Arc<Vec<ModelInfo>>;
 
         let read_guard = API_MODELS_CACHE.read().await;
         if let Some(cached_data) = &*read_guard {
-            // 緩存命中
-            debug!("✅ 模型緩存命中。");
+            // Cache hit
+            debug!("✅ Model cache hit.");
             api_models_data_arc = cached_data.clone();
             drop(read_guard);
         } else {
-            // 緩存未命中
-            debug!("❌ 模型緩存未命中。正在嘗試填充...");
+            // Cache miss
+            debug!("❌ Model cache miss. Attempting to populate...");
             drop(read_guard);
 
             let mut write_guard = API_MODELS_CACHE.write().await;
-            // 再次檢查，防止在獲取寫入鎖期間其他線程已填充緩存
+            // Check again to prevent race condition during write lock acquisition
             if let Some(cached_data) = &*write_guard {
-                debug!("✅ API 模型緩存在等待寫入鎖時由另一個執行緒填充。");
+                debug!("✅ API model cache filled by another thread during write lock wait.");
                 api_models_data_arc = cached_data.clone();
             } else {
-                // 緩存確實是空的，從 API 獲取數據
-                info!("⏳ 從 API 取得模型以填充快取中……");
-                match get_model_list(Some("zh-Hant")).await {
+                // Cache is indeed empty, fetch from API
+                info!("⏳ Fetching models from API to populate cache...");
+                match get_model_list(Some("en-us")).await {
                     Ok(list) => {
                         let lowercase_models = list
                             .data
@@ -119,16 +119,16 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
                         info!("✅ API models cache populated successfully.");
                     }
                     Err(e) => {
-                        // 如果填充緩存失敗，返回錯誤
-                        let duration = start_time.elapsed(); // 計算耗時
+                        // If cache population failed, return error
+                        let duration = start_time.elapsed(); // Calculate duration
                         error!(
-                            "❌ 無法填充 API 模型快取：{} | 耗時：{}。",
+                            "❌ Failed to populate API models cache: {} | Duration: {}.",
                             e,
-                            crate::utils::format_duration(duration) // 在日誌中使用 duration
+                            crate::utils::format_duration(duration) // Use duration in log
                         );
                         res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
                         res.render(Json(
-                            json!({ "error": format!("未能檢索模型列表以填充快取：{}", e) }),
+                            json!({ "error": format!("Failed to retrieve model list for cache population: {}", e) }),
                         ));
                         drop(write_guard);
                         return;
@@ -149,18 +149,18 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
             let api_model_id_lower = api_model_ref.id.to_lowercase();
             match yaml_config_map.get(&api_model_id_lower) {
                 Some(yaml_config) => {
-                    // 在 YAML 中找到：檢查是否啟用，若啟用則應用 mapping
+                    // Found in YAML: check if enabled, apply mapping if enabled
                     if yaml_config.enable.unwrap_or(true) {
                         let final_id = if let Some(mapping) = &yaml_config.mapping {
                             let new_id = mapping.to_lowercase();
                             debug!(
-                                "🔄 API 模型改名 (YAML 啟用): {} -> {}",
+                                "🔄 API model renamed (YAML enabled): {} -> {}",
                                 api_model_id_lower, new_id
                             );
                             new_id
                         } else {
                             debug!(
-                                "✅ 保留 API 模型 (YAML 啟用，無 mapping): {}",
+                                "✅ Keep API model (YAML enabled, no mapping): {}",
                                 api_model_id_lower
                             );
                             api_model_id_lower.clone()
@@ -172,11 +172,11 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
                             owned_by: api_model_ref.owned_by.clone(),
                         });
                     } else {
-                        debug!("❌ 排除 API 模型 (YAML 停用): {}", api_model_id_lower);
+                        debug!("❌ Exclude API model (YAML disabled): {}", api_model_id_lower);
                     }
                 }
                 None => {
-                    debug!("✅ 保留 API 模型 (不在 YAML 中): {}", api_model_id_lower);
+                    debug!("✅ Keep API model (not in YAML): {}", api_model_id_lower);
                     processed_models_enabled.push(ModelInfo {
                         id: api_model_id_lower.clone(),
                         object: api_model_ref.object.clone(),
@@ -187,23 +187,23 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
             }
         }
 
-        // 處理自訂模型，將其添加到已處理的模型列表中
+        // Process custom models, add to processed models list
         if let Some(custom_models) = &config.custom_models {
             if !custom_models.is_empty() {
-                info!("📋 處理自訂模型 | 數量: {}", custom_models.len());
+                info!("📋 Processing custom models | Count: {}", custom_models.len());
                 for custom_model in custom_models {
                     let model_id = custom_model.id.to_lowercase();
-                    // 檢查該ID是否已存在於處理後的模型中
+                    // Check if this ID already exists in processed models
                     if !processed_models_enabled.iter().any(|m| m.id == model_id) {
-                        // 檢查是否在 yaml_config_map 中配置了 enable: false
+                        // Check if enable: false configured in yaml_config_map
                         if let Some(yaml_config) = yaml_config_map.get(&model_id) {
                             if yaml_config.enable == Some(false) {
-                                debug!("❌ 排除自訂模型 (YAML 停用): {}", model_id);
+                                debug!("❌ Exclude custom model (YAML disabled): {}", model_id);
                                 continue;
                             }
                         }
 
-                        debug!("➕ 添加自訂模型: {}", model_id);
+                        debug!("➕ Adding custom model: {}", model_id);
                         processed_models_enabled.push(ModelInfo {
                             id: model_id,
                             object: "model".to_string(),
@@ -227,7 +227,7 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
 
         let duration = start_time.elapsed();
         info!(
-            "✅ 成功獲取處理後模型列表 | 來源: {} | 模型數量: {} | 處理時間: {}",
+            "✅ Successfully got processed model list | Source: {} | Model count: {} | Processing time: {}",
             "YAML + Cached API",
             processed_models_enabled.len(),
             crate::utils::format_duration(duration)
@@ -235,9 +235,9 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
 
         res.render(Json(response));
     } else {
-        info!("🔌 YAML 停用，直接從 Poe API 獲取模型列表 (無緩存，無 YAML 規則)...");
+        info!("🔌 YAML disabled, directly getting model list from Poe API (no cache, no YAML rules)...");
 
-        match get_model_list(Some("zh-Hant")).await {
+        match get_model_list(Some("en-us")).await {
             Ok(model_list) => {
                 let lowercase_models = model_list
                     .data
@@ -254,7 +254,7 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
                 });
                 let duration = start_time.elapsed();
                 info!(
-                    "✅ [直連 Poe] 成功直接獲取模型列表 | 模型數量: {} | 處理時間: {}",
+                    "✅ [Direct Poe] Successfully got model list directly | Model count: {} | Processing time: {}",
                     lowercase_models.len(),
                     crate::utils::format_duration(duration)
                 );
@@ -263,13 +263,13 @@ pub async fn get_models(req: &mut Request, res: &mut Response) {
             Err(e) => {
                 let duration = start_time.elapsed();
                 error!(
-                    "❌ [直連 Poe] 直接獲取模型列表失敗 | 錯誤: {} | 耗時: {}",
+                    "❌ [Direct Poe] Failed to get model list directly | Error: {} | Duration: {}",
                     e,
                     crate::utils::format_duration(duration)
                 );
                 res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
                 res.render(Json(
-                    json!({ "error": format!("無法直接從API獲取模型：{}", e) }),
+                    json!({ "error": format!("Failed to get models directly from API: {}", e) }),
                 ));
             }
         }

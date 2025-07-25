@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" class="scroll-smooth">
+<html lang="en-us" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +43,7 @@
 			<!-- Header -->
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 sm:p-6 mb-6 transition-all duration-300">
 				<div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-					<h1 class="text-2xl font-medium text-gray-900 dark:text-white">Models 管理介面</h1>
+					<h1 class="text-2xl font-medium text-gray-900 dark:text-white">Models Management Interface</h1>
 					<div class="flex flex-wrap items-center gap-3">
 						<!-- Theme Toggle -->
 						<button id="themeToggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 transition-colors duration-300">
@@ -56,7 +56,7 @@
 						</button>
 						<!-- API Toggle -->
 						<div class="flex items-center gap-3">
-							<span class="text-sm font-medium">啟用自定義</span>
+							<span class="text-sm font-medium">Enable Customization</span>
 							<label class="relative inline-flex items-center cursor-pointer">
 								<input type="checkbox" id="apiToggle" class="sr-only peer">
 								<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 dark:peer-focus:ring-primary-dark/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-dark"></div>
@@ -64,7 +64,7 @@
 						</div>
 						<!-- Hide Disabled Models Toggle -->
 						<div class="flex items-center gap-3">
-							<span class="text-sm font-medium">隱藏停用模型</span>
+							<span class="text-sm font-medium">Hide Disabled Models</span>
 							<label class="relative inline-flex items-center cursor-pointer">
 								<input type="checkbox" id="hideDisabledToggle" class="sr-only peer">
 								<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 dark:peer-focus:ring-primary-dark/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-dark"></div>
@@ -102,17 +102,17 @@
 				<div class="flex flex-col sm:flex-row gap-4">
 					<div class="flex-grow">
 						<div class="relative">
-							<input id="modelSearchInput" type="text" placeholder="搜索模型..." class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+							<input id="modelSearchInput" type="text" placeholder="Search models..." class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
 							<i class="fas fa-search absolute right-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
 						</div>
 					</div>
 					<div class="flex items-center gap-3">
 						<select id="modelFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
-							<option value="all">所有模型</option>
-							<option value="custom">自訂模型</option>
-							<option value="mapped">已映射模型</option>
-							<option value="replace">替換回應模型</option>
-							<option value="disabled">已停用模型</option>
+							<option value="all">All Models</option>
+							<option value="custom">Custom Models</option>
+							<option value="mapped">Mapped Models</option>
+							<option value="replace">Replacement Response Models</option>
+							<option value="disabled">Disabled Models</option>
 						</select>
 					</div>
 				</div>
@@ -121,23 +121,23 @@
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 mb-6 transition-all duration-300">
 				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center">
 					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-						<span class="block text-sm text-gray-500 dark:text-gray-400">總模型數</span>
+						<span class="block text-sm text-gray-500 dark:text-gray-400">Total Models</span>
 						<span id="totalModelsCount" class="block text-xl font-semibold mt-1">0</span>
 					</div>
 					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-						<span class="block text-sm text-gray-500 dark:text-gray-400">自訂模型</span>
+						<span class="block text-sm text-gray-500 dark:text-gray-400">Custom Models</span>
 						<span id="customModelsCount" class="block text-xl font-semibold mt-1 text-green-600 dark:text-green-400">0</span>
 					</div>
 					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-						<span class="block text-sm text-gray-500 dark:text-gray-400">已映射</span>
+						<span class="block text-sm text-gray-500 dark:text-gray-400">Mapped</span>
 						<span id="mappedModelsCount" class="block text-xl font-semibold mt-1 text-blue-600 dark:text-blue-400">0</span>
 					</div>
 					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-						<span class="block text-sm text-gray-500 dark:text-gray-400">替換回應</span>
+						<span class="block text-sm text-gray-500 dark:text-gray-400">Replacement</span>
 						<span id="replaceModelsCount" class="block text-xl font-semibold mt-1 text-yellow-600 dark:text-yellow-400">0</span>
 					</div>
 					<div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-						<span class="block text-sm text-gray-500 dark:text-gray-400">已停用</span>
+						<span class="block text-sm text-gray-500 dark:text-gray-400">Disabled</span>
 						<span id="disabledModelsCount" class="block text-xl font-semibold mt-1 text-red-600 dark:text-red-400">0</span>
 					</div>
 				</div>
@@ -147,7 +147,7 @@
 				<div id="loadingIndicator" class="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 flex items-center justify-center z-10 rounded-xl">
 					<div class="text-center">
 						<i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary dark:text-primary-dark"></i>
-						<p class="text-gray-700 dark:text-gray-300">載入模型中...</p>
+						<p class="text-gray-700 dark:text-gray-300">Loading models...</p>
 					</div>
 				</div>
 				<div id="modelsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -161,7 +161,7 @@
 					<i class="fas fa-exclamation-triangle text-3xl mb-3"></i>
 					<p>獲取Models列表失敗</p>
 					<button onclick="fetchModels()" class="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200 text-gray-900 dark:text-white">
-						<i class="fas fa-redo mr-2"></i>重試
+						<i class="fas fa-redo mr-2"></i>Retry
 					</button>
 				</div>
 			</div>
@@ -175,12 +175,12 @@
 		<div id="editModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 transform scale-95 transition-transform duration-300">
 				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">編輯Model映射名稱</h2>
+					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Model Mapping Name</h2>
 					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
 						<i class="fas fa-times text-lg"></i>
 					</button>
 				</div>
-				<input type="text" id="modelNameInput" placeholder="輸入新的映射名稱" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200 mb-5">
+				<input type="text" id="modelNameInput" placeholder="Enter new mapping name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200 mb-5">
 				<div class="flex justify-end gap-3">
 					<button onclick="cancelEdit()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors duration-200">
 						取消
@@ -195,19 +195,19 @@
 		<div id="addCustomModelModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-lg w-full p-6 transform scale-95 transition-transform duration-300">
 				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">添加自訂模型</h2>
+					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Add Custom Model</h2>
 					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
 						<i class="fas fa-times text-lg"></i>
 					</button>
 				</div>
 				<div class="space-y-4">
 					<div>
-						<label for="customModelId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">模型ID / Bot名稱</label>
-						<input type="text" id="customModelId" placeholder="輸入模型ID或Bot名稱" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+						<label for="customModelId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Model ID / Bot Name</label>
+						<input type="text" id="customModelId" placeholder="Enter model ID or Bot name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
 					</div>
 					<div>
-						<label for="customModelOwner" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">模型提供商 (選填)</label>
-						<input type="text" id="customModelOwner" placeholder="例如：openai" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
+						<label for="customModelOwner" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Model Provider (optional)</label>
+						<input type="text" id="customModelOwner" placeholder="e.g., openai" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary-dark transition-colors duration-200">
 					</div>
 				</div>
 				<div class="flex justify-end gap-3 mt-6">
@@ -224,7 +224,7 @@
 		<div id="customModelsListModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full p-6 transform scale-95 transition-transform duration-300">
 				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">自訂模型管理</h2>
+					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Custom Model Management</h2>
 					<button class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
 						<i class="fas fa-times text-lg"></i>
 					</button>
@@ -247,31 +247,31 @@
 		<div id="guideModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
 			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 transform scale-95 transition-transform duration-300">
 				<div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">功能說明</h2>
+					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Feature Description</h2>
 					<button onclick="closeGuide()" class="close-modal text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
 						<i class="fas fa-times text-lg"></i>
 					</button>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3">
 					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
-						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">模型狀態設定</h3>
+						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Model Status Settings</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
-								<span class="font-semibold mr-2">無標記 (-)：</span>
+								<span class="font-semibold mr-2">No Marker (-):</span>
 								<span>保持原始模型設定，不做任何修改</span>
 							</li>
 							<li class="flex items-start">
-								<span class="font-semibold mr-2">黃色 (R)：</span>
+								<span class="font-semibold mr-2">Yellow (R):</span>
 								<span>主要為在Poe平台的文生圖/文生視頻相關模型作出的兼容性處理</span>
 							</li>
 							<li class="flex items-start">
-								<span class="font-semibold mr-2">打叉 (X)：</span>
+								<span class="font-semibold mr-2">Crossed (X):</span>
 								<span>停用該模型，在模型列表中將不會顯示此模型</span>
 							</li>
 						</ul>
 					</div>
 					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
-						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">模型映射功能</h3>
+						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Model Mapping Function</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
 								<span>可為模型設定一個新的顯示名稱，原始名稱會顯示在左側並加上刪除線</span>
@@ -285,13 +285,13 @@
 						</ul>
 					</div>
 					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
-						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">全域啟用開關影響範圍</h3>
+						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Global Enable Switch Scope</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
 								<span>啟用後會影響以下API端點的行為：</span>
 							</li>
 							<li class="flex items-start">
-								<span class="font-semibold mr-2">模型列表過濾 & 模型映射</span>
+								<span class="font-semibold mr-2">Model List Filtering & Model Mapping</span>
 							</li>
 							<li class="flex items-start">
 								<span class="ml-2">- GET /v1/models</span>
@@ -300,7 +300,7 @@
 								<span class="ml-2">- GET /models</span>
 							</li>
 							<li class="flex items-start">
-								<span class="font-semibold mr-2">聊天事件處理 & 模型映射</span>
+								<span class="font-semibold mr-2">Chat Event Handling & Model Mapping</span>
 							</li>
 							<li class="flex items-start">
 								<span class="ml-2">- POST /chat/completions</span>
@@ -311,7 +311,7 @@
 						</ul>
 					</div>
 					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
-						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">自訂模型功能</h3>
+						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Custom Model Function</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
 								<span>可在模型列表中添加自訂模型</span>
@@ -328,7 +328,7 @@
 						</ul>
 					</div>
 					<div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl transition-colors duration-200">
-						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">搜索與過濾</h3>
+						<h3 class="text-primary dark:text-primary-dark font-semibold mb-3">Search and Filtering</h3>
 						<ul class="space-y-2 text-sm">
 							<li class="flex items-start">
 								<span>使用搜索框快速尋找特定模型</span>
@@ -368,7 +368,7 @@
             let searchTerm = "";
             // Initialize the page
             document.addEventListener("DOMContentLoaded", () => {
-              // 等待DOM完全加載後執行
+              // Wait for DOM to load
               fetchModels();
               loadConfig();
               updateTheme();
@@ -452,7 +452,7 @@
                 });
                 const data = await response.json();
                 configData = data;
-                // 確保 custom_models 存在
+                // Ensure custom_models exists
                 if (!configData.custom_models) {
                   configData.custom_models = [];
                 }
@@ -460,8 +460,8 @@
                 updateModelStates();
                 filterModels();
               } catch (error) {
-                showToast("載入配置失敗");
-                console.error("載入配置錯誤:", error);
+                showToast("Failed to load configuration");
+                console.error("Load configuration error:", error);
               }
             }
             // Update model states based on config
@@ -474,10 +474,10 @@
                   ? "X"
                   : "-",
               }));
-              // 添加自訂模型
+              // Add custom model
               if (configData.custom_models && configData.custom_models.length > 0) {
                 configData.custom_models.forEach((customModel) => {
-                  // 檢查是否已存在於模型列表
+                  // Check if already exists in model list
                   if (
                     !models.some(
                       (m) => m.name.toLowerCase() === customModel.id.toLowerCase()
@@ -507,9 +507,9 @@
               filterModels();
             }
             function filterModels() {
-              // 先顯示載入指示器
+              // Show loading indicator
               showLoadingState(true);
-              // 使用setTimeout來避免UI阻塞
+              // Use setTimeout to avoid UI blocking
               setTimeout(() => {
                 filteredModels = [...models];
                 // Apply search filter
@@ -542,9 +542,9 @@
                 updateModelStats();
                 // Render filtered models
                 renderModelCards();
-                // 隱藏載入指示器
+                // Hide loading indicator
                 showLoadingState(false);
-              }, 5); // 小延遲，讓UI有時間響應
+              }, 5); // Small delay for UI response
             }
             // Show or hide loading indicator
             function showLoadingState(isLoading) {
@@ -631,7 +631,7 @@
                   const card = document.createElement("div");
                   card.className =
                     "bg-white dark:bg-gray-800 rounded-xl shadow-apple dark:shadow-apple-dark p-4 transition-all duration-300 flex justify-between items-center hover:shadow-lg";
-                  // 檢測是否是自訂模型
+                  // Check if it's a custom model
                   const isCustom =
                     configData.custom_models &&
                     configData.custom_models.some(
@@ -659,12 +659,12 @@
                   } else {
                     nameSpan.textContent = model.name;
                   }
-                  // 如果是自訂模型，添加標籤
+                  // If it's a custom model, add tag
                   if (isCustom) {
                     const customTag = document.createElement("span");
                     customTag.className =
                       "ml-2 px-1.5 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded";
-                    customTag.textContent = "自訂";
+                    customTag.textContent = "Custom";
                     nameSpan.appendChild(customTag);
                   }
                   modelInfo.appendChild(nameSpan);
@@ -716,7 +716,7 @@
                     e.stopPropagation();
                     resetMapping(model);
                   };
-                  // 如果是自訂模型，添加刪除按鈕
+                  // If it's a custom model, add delete button
                   if (isCustom) {
                     const deleteBtn = document.createElement("button");
                     deleteBtn.className =
@@ -734,7 +734,7 @@
                   controls.appendChild(buttonControls);
                   card.appendChild(modelInfo);
                   card.appendChild(controls);
-                  // 移除卡片點擊事件，只保留按鈕的點擊功能
+                  // Remove card click event, keep button functionality
                   grid.appendChild(card);
                 });
               }
@@ -812,7 +812,7 @@
                 }
               }
               filterModels();
-              showToast("已重置映射名稱");
+              showToast("Mapping name reset");
             }
             // Show edit modal
             function showEditModal(model) {
@@ -826,7 +826,7 @@
               modalContent.classList.add("scale-100");
               setTimeout(() => {
                 input.focus();
-                // 添加按Enter確認的功能
+                // Add Enter key confirmation
                 input.onkeydown = (e) => {
                   if (e.key === "Enter") {
                     saveEdit();
@@ -854,7 +854,7 @@
             function showAddCustomModel() {
               const modal = document.getElementById("addCustomModelModal");
               const modalContent = modal.querySelector("div > div");
-              // 清空輸入框
+              // Clear input fields
               document.getElementById("customModelId").value = "";
               document.getElementById("customModelOwner").value = "";
               modal.classList.remove("opacity-0", "pointer-events-none");
@@ -863,7 +863,7 @@
               setTimeout(() => {
                 const input = document.getElementById("customModelId");
                 input.focus();
-                // 添加按Enter確認的功能
+                // Add Enter key confirmation
                 input.onkeydown = (e) => {
                   if (e.key === "Enter") {
                     addCustomModel();

@@ -33,8 +33,8 @@ async fn save_config(req: &mut Request, res: &mut Response) {
                 res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
                 res.render(Json(json!({ "error": e.to_string() })));
             } else {
-                info!("✅ models.yaml 已成功儲存。");
-                // 同步寫入 sled 快取
+                info!("✅ models.yaml saved successfully.");
+                // Sync write to sled cache
                 let _ = save_config_sled("models.yaml", &config);
                 invalidate_config_cache();
                 res.render(Json(json!({ "status": "success" })));
@@ -53,7 +53,7 @@ fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
         let contents = fs::read_to_string(config_path)?;
         match serde_yaml::from_str::<Config>(&contents) {
             Ok(mut config) => {
-                // 確保 custom_models 字段存在
+                // Ensure custom_models field exists
                 if config.custom_models.is_none() {
                     config.custom_models = Some(Vec::new());
                 }
@@ -65,7 +65,7 @@ fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
         Ok(Config {
             enable: Some(false),
             models: std::collections::HashMap::new(),
-            custom_models: Some(Vec::new()), // 初始化為空陣列而非 None
+            custom_models: Some(Vec::new()), // Initialize as empty array instead of None
         })
     }
 }
@@ -78,7 +78,7 @@ fn save_config_to_file(config: &Config) -> Result<(), Box<dyn std::error::Error>
 }
 
 fn invalidate_config_cache() {
-    info!("🗑️  清除 models.yaml 設定緩存...");
+    info!("🗑️  Clearing models.yaml config cache...");
     remove_config_sled("models.yaml");
 }
 
@@ -97,7 +97,7 @@ impl BasicAuthValidator for AdminAuthValidator {
 pub fn admin_routes() -> Router {
     let auth_handler = BasicAuth::new(AdminAuthValidator);
     Router::new()
-        .hoop(auth_handler) // 加入認證中間件
+        .hoop(auth_handler) // Add authentication middleware
         .push(Router::with_path("admin").get(admin_page))
         .push(
             Router::with_path("api/admin/config")

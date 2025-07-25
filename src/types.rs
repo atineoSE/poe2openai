@@ -23,7 +23,7 @@ pub struct StreamOptions {
     pub include_usage: Option<bool>,
 }
 
-// 定義支援 OpenAI content 格式的 enum (String 或陣列)
+// Define enum for OpenAI content format (String or array)
 #[derive(Debug, Deserialize, Clone)]
 #[serde(untagged)]
 pub enum OpenAiContent {
@@ -31,7 +31,7 @@ pub enum OpenAiContent {
     Multi(Vec<OpenAiContentItem>),
 }
 
-// 定義 OpenAI content 陣列內的項目類型
+// Define item type for OpenAI content array
 #[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum OpenAiContentItem {
@@ -41,14 +41,14 @@ pub enum OpenAiContentItem {
     ImageUrl { image_url: ImageUrlContent },
 }
 
-// 定義 image_url 的內容結構
+// Define structure for image_url content
 #[derive(Debug, Deserialize, Clone)]
 pub struct ImageUrlContent {
     pub url: String,
-    // 可擴展其他欄位如 detail 等
+    // Can extend other fields like detail
 }
 
-// 更新 Message 結構使用新的 OpenAiContent
+// Update Message struct to use new OpenAiContent
 #[derive(Deserialize, Clone)]
 pub struct Message {
     pub role: String,

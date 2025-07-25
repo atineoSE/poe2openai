@@ -9,13 +9,13 @@ use std::time::Instant;
 use tracing::{debug, error, info};
 
 pub struct PoeClientWrapper {
-    pub client: PoeClient, // 修改為公開，以便外部訪問
+    pub client: PoeClient, // Made public for external access
     _model: String,
 }
 
 impl PoeClientWrapper {
     pub fn new(model: &str, access_key: &str) -> Self {
-        info!("🔑 初始化 POE 客戶端 | 模型: {}", model);
+        info!("🔑 Initializing POE client | Model: {}", model);
         Self {
             client: PoeClient::new(model, access_key),
             _model: model.to_string(),
@@ -27,7 +27,7 @@ impl PoeClientWrapper {
     ) -> Result<Pin<Box<dyn Stream<Item = Result<ChatResponse, PoeError>> + Send>>, PoeError> {
         let start_time = Instant::now();
         debug!(
-            "📤 發送串流請求 | 訊息數量: {} | 溫度設置: {:?}",
+            "📤 Sending streaming request | Message count: {} | Temperature: {:?}",
             chat_request.query.len(),
             chat_request.temperature
         );
@@ -36,14 +36,14 @@ impl PoeClientWrapper {
             Ok(_) => {
                 let duration = start_time.elapsed();
                 info!(
-                    "✅ 串流請求建立成功 | 耗時: {}",
+                    "✅ Streaming request established successfully | Duration: {}",
                     crate::utils::format_duration(duration)
                 );
             }
             Err(e) => {
                 let duration = start_time.elapsed();
                 error!(
-                    "❌ 串流請求失敗 | 錯誤: {} | 耗時: {}",
+                    "❌ Streaming request failed | Error: {} | Duration: {}",
                     e,
                     crate::utils::format_duration(duration)
                 );
@@ -53,7 +53,7 @@ impl PoeClientWrapper {
     }
 }
 
-// OpenAI 消息格式轉換為 Poe 消息格式的函數
+// Function to convert OpenAI message format to Poe message format
 fn openai_message_to_poe(msg: &Message, role_override: Option<String>) -> ChatMessage {
     let mut attachments: Vec<Attachment> = vec![];
     let mut texts: Vec<String> = vec![];
@@ -67,7 +67,7 @@ fn openai_message_to_poe(msg: &Message, role_override: Option<String>) -> ChatMe
                 match item {
                     OpenAiContentItem::Text { text } => texts.push(text.clone()),
                     OpenAiContentItem::ImageUrl { image_url } => {
-                        debug!("🖼️  處理圖片 URL: {}", image_url.url);
+                        debug!("🖼️  Processing image URL: {}", image_url.url);
                         attachments.push(Attachment {
                             url: image_url.url.clone(),
                             content_type: None,
@@ -83,7 +83,7 @@ fn openai_message_to_poe(msg: &Message, role_override: Option<String>) -> ChatMe
         role,
         content: texts.join("\n"),
         attachments: if !attachments.is_empty() {
-            debug!("📎 添加 {} 個附件到消息", attachments.len());
+            debug!("📎 Added {} attachments to message", attachments.len());
             Some(attachments)
         } else {
             None
@@ -101,23 +101,23 @@ pub async fn create_chat_request(
     stop: Option<Vec<String>>,
 ) -> ChatRequest {
     debug!(
-        "📝 創建聊天請求 | 模型: {} | 訊息數量: {} | 溫度設置: {:?} | 工具數量: {:?}",
+        "📝 Creating chat request | Model: {} | Message count: {} | Temperature: {:?} | Tool count: {:?}",
         model,
         messages.len(),
         temperature,
         tools.as_ref().map(|t| t.len())
     );
-    // 從緩存獲取 models.yaml 配置
+    // Get models.yaml config from cache
     let config: Arc<Config> = get_cached_config().await;
-    // 檢查模型是否需要 replace_response 處理
+    // Check if model needs replace_response processing
     let should_replace_response = if let Some(model_config) = config.models.get(model) {
-        // 使用快取的 config
+        // Use cached config
         model_config.replace_response.unwrap_or(false)
     } else {
         false
     };
     debug!(
-        "🔍 模型 {} 的 replace_response 設置: {}",
+        "🔍 Model {} replace_response setting: {}",
         model, should_replace_response
     );
     let query = messages
@@ -125,20 +125,20 @@ pub async fn create_chat_request(
         .map(|msg| {
             let original_role = &msg.role;
             let role_override = match original_role.as_str() {
-                // 總是將 assistant 轉換為 bot
+                // Always convert assistant to bot
                 "assistant" => Some("bot".to_string()),
-                // 總是將 developer 轉換為 user
+                // Always convert developer to user
                 "developer" => Some("user".to_string()),
-                // 只有在 replace_response 為 true 時才轉換 system 為 user
+                // Only convert system to user if replace_response is true
                 "system" if should_replace_response => Some("user".to_string()),
-                // 其他情況保持原樣
+                // Keep original otherwise
                 _ => None,
             };
-            // 將 OpenAI 消息轉換為 Poe 消息
+            // Convert OpenAI message to Poe message
             let poe_message = openai_message_to_poe(msg, role_override);
-            // 紀錄轉換結果
+            // Record conversion result
             debug!(
-                "🔄 處理訊息 | 原始角色: {} | 轉換後角色: {} | 內容長度: {} | 附件數量: {}",
+                "🔄 Processing message | Original role: {} | Converted role: {} | Content length: {} | Attachments: {}",
                 original_role,
                 poe_message.role,
                 crate::utils::format_bytes_length(poe_message.content.len()),
@@ -147,17 +147,17 @@ pub async fn create_chat_request(
             poe_message
         })
         .collect();
-    // 處理工具結果消息
+    // Process tool result messages
     let mut tool_results = None;
-    // 檢查是否有 tool 角色的消息，並將其轉換為 ToolResult
+    // Check for tool role messages and convert to ToolResult
     if messages.iter().any(|msg| msg.role == "tool") {
         let mut results = Vec::new();
         for msg in &messages {
             if msg.role == "tool" {
-                // 從內容中提取文字部分
+                // Extract text content
                 let content_text = get_text_from_openai_content(&msg.content);
                 if let Some(tool_call_id) = extract_tool_call_id(&content_text) {
-                    debug!("🔧 處理工具結果 | tool_call_id: {}", tool_call_id);
+                    debug!("🔧 Processing tool result | tool_call_id: {}", tool_call_id);
                     results.push(poe_api_process::types::ChatToolResult {
                         role: "tool".to_string(),
                         tool_call_id,
@@ -165,14 +165,14 @@ pub async fn create_chat_request(
                         content: content_text,
                     });
                 } else {
-                    debug!("⚠️ 無法從工具消息中提取 tool_call_id");
+                    debug!("⚠️ Failed to extract tool_call_id from tool message");
                 }
             }
         }
         if !results.is_empty() {
             tool_results = Some(results);
             debug!(
-                "🔧 創建了 {} 個工具結果",
+                "🔧 Created {} tool results",
                 tool_results.as_ref().unwrap().len()
             );
         }
@@ -193,15 +193,15 @@ pub async fn create_chat_request(
     }
 }
 
-// 從工具消息中提取 tool_call_id
+// Extract tool_call_id from tool message
 fn extract_tool_call_id(content: &str) -> Option<String> {
-    // 嘗試解析 JSON 格式的內容
+    // Try to parse JSON formatted content
     if let Ok(json) = serde_json::from_str::<serde_json::Value>(content) {
         if let Some(tool_call_id) = json.get("tool_call_id").and_then(|v| v.as_str()) {
             return Some(tool_call_id.to_string());
         }
     }
-    // 嘗試使用簡單的文本解析
+    // Try simple text parsing
     if let Some(start) = content.find("tool_call_id") {
         if let Some(id_start) = content[start..].find('"') {
             if let Some(id_end) = content[start + id_start + 1..].find('"') {
