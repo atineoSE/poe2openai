@@ -58,36 +58,43 @@ pub async fn chat_completions(req: &mut Request, res: &mut Response) {
 
     // Parse request body
     let chat_request = match req.payload_with_max_size(max_size).await {
-        Ok(bytes) => match serde_json::from_slice::<ChatCompletionRequest>(bytes) {
-            Ok(req) => {
-                debug!(
-                    "📊 Request parsed successfully | Model: {} | Message count: {} | Stream: {:?}",
-                    req.model,
-                    req.messages.len(),
-                    req.stream
-                );
-                req
+        Ok(bytes) => {
+            debug!("📥 Incoming request body:\n{}", String::from_utf8_lossy(&bytes));
+
+            match serde_json::from_slice::<ChatCompletionRequest>(&bytes) {
+                Ok(req) => {
+                    debug!(
+                        "📊 Request parsed successfully | Model: {} | Message count: {} | Stream: {:?}",
+                        req.model,
+                        req.messages.len(),
+                        req.stream
+                    );
+                    req
+                }
+                Err(e) => {
+                    error!("❌ JSON parse failed: {}", e);
+                    res.status_code(StatusCode::BAD_REQUEST);
+                    res.render(Json(OpenAIErrorResponse {
+                        error: OpenAIError {
+                            message: format!("JSON parse failed: {}", e),
+                            r#type: "invalid_request_error".to_string(),
+                            code: "parse_error".to_string(),
+                            param: None,
+                        },
+                    }));
+                    return;
+                }
             }
-            Err(e) => {
-                error!("❌ JSON parse failed: {}", e);
-                res.status_code(StatusCode::BAD_REQUEST);
-                res.render(Json(OpenAIErrorResponse {
-                    error: OpenAIError {
-                        message: format!("JSON parse failed: {}", e),
-                        r#type: "invalid_request_error".to_string(),
-                        code: "parse_error".to_string(),
-                        param: None,
-                    },
-                }));
-                return;
-            }
-        },
+        }
         Err(e) => {
             error!("❌ Request size exceeds limit or read failed: {}", e);
             res.status_code(StatusCode::PAYLOAD_TOO_LARGE);
             res.render(Json(OpenAIErrorResponse {
                 error: OpenAIError {
-                    message: format!("Request size exceeds limit ({} bytes) or read failed: {}", max_size, e),
+                    message: format!(
+                        "Request size exceeds limit ({} bytes) or read failed: {}",
+                        max_size, e
+                    ),
                     r#type: "invalid_request_error".to_string(),
                     code: "payload_too_large".to_string(),
                     param: None,
